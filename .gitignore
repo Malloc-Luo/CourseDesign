@@ -1,0 +1,11 @@
+*.__i
+*.obj
+*.lnp
+*.htm
+*.lst
+*.m51
+*.uvgui.*
+*.uvopt
+*.o
+
+TMM
