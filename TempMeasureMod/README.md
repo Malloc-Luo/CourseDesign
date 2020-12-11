@@ -16,6 +16,13 @@ src-->
     |--> main.c
     |--> bluetooth.c
     |--> schedul.c
+    |--> LEDdisplay.c
+    |--> ADtemp.c
+inc-->
+    |--> module.h
+    |--> bluetooth.h
+    |--> LEDdisplay.h
+    |--> ADtemp.h
 ```
 
 #### 1. 总体结构
