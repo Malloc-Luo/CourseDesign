@@ -1,5 +1,7 @@
 ## 简单温控系统
 
+[github]([Malloc-Luo/CourseDesign: 大三上微机原理课程设计 (github.com)](https://github.com/Malloc-Luo/CourseDesign))
+
 ### 一，创新
 
 *   显示设定值和当前值—数码管
