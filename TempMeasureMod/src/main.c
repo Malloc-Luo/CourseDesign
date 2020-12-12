@@ -15,6 +15,10 @@
 /* 系统时钟计数，50ms */
 static uint16_t xdata systick = 0;
 
+uint16_t ModTemperture = 0;
+uint16_t SetTemperture = 0;
+uint16_t RefTemperture = 0;
+
 /* 硬件初始化放在这里面 */
 static void hardware_init()
 {

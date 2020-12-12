@@ -19,10 +19,17 @@ typedef signed long int32_t;
  * 将获取到的温度 * 10后转换成16位整形
  */
 extern uint16_t ModTemperture;
+
 /*
  * 设定的温度值
  */
 extern uint16_t SetTemperture;
+
+/*
+ * 最低参考温度，也就是设定值的最小范围
+ */
+extern uint16_t RefTemperture;
+
 /*
  * 上位机指令
  */

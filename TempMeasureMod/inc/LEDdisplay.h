@@ -19,4 +19,16 @@ extern void LED_display(uint16_t setval, uint16_t actulval);
  */
 extern uint16_t get_setval(void);
 
+/*
+ * 如果按键状态发生改变将这个值置1
+ * 后续由用户手动清零
+ */
+extern uint8_t isSetValChanged;
+
+/*
+ * 是否重置参考值(最低值)，若重置参考值的按键被按下则改位置1
+ * 使用后手动清零
+ */
+extern uint8_t isResetRefVal;
+
 #endif
