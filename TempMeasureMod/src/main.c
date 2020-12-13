@@ -19,6 +19,8 @@ uint16_t ModTemperture = 0;
 uint16_t SetTemperture = 0;
 uint16_t RefTemperture = 0;
 
+sfr AUXR = 0x8e;
+
 /* 硬件初始化放在这里面 */
 static void hardware_init()
 {
@@ -34,8 +36,16 @@ static void hardware_init()
     IP   = 0x01;
     
     /*
-     * your cod
+     * 串口初始化，波特率9600，1停止位，偶校验
      */
+    TMOD = 0x01 | 0x20;
+    SCON = 0x50;
+    AUXR = 0x00;
+    TH1  = 0xfd;
+    TL1  = 0xfd;
+    IE   = 0x90 | 0x83;
+    TR1  = 1;
+    
 }
 
 
