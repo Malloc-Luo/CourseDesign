@@ -25,4 +25,7 @@ extern uint8_t isSetValChanged;
  */
 extern uint8_t isResetRefVal;
 
+//LCD1602≥ı ºªØ
+void Init_Lcd(void);
 #endif
+

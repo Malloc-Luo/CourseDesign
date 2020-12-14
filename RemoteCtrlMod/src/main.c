@@ -9,6 +9,7 @@
  *****************************************************/
 #include <reg51.h>
 #include "bluetooth.h"
+#include "LCDdisplay.h"
 /* 系统时钟计数，50ms */
 static uint16_t xdata systick = 0;
 
@@ -33,6 +34,7 @@ static void hardware_init()
     /*
      * your cod
      */
+	Init_Lcd();
 }
 
 
