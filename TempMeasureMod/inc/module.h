@@ -5,6 +5,7 @@
  ******************************************************/
 #ifndef __MODULE_H__
 #define __MODULE_H__
+#include <reg51.h>
 
 typedef unsigned char uint8_t;
 typedef unsigned int  uint16_t;

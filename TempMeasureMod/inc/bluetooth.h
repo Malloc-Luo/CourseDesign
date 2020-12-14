@@ -5,4 +5,10 @@
 
 void send_data(uint16_t temperture, uint8_t instruction);
 
+/*
+ * ÀëÏß¼ì²éÒ£¿ØÆ÷
+ */
+extern uint8_t isRCOffline;
+extern uint8_t RCOfflineCheckCnt;
+
 #endif

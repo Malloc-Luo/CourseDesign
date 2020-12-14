@@ -6,13 +6,14 @@
  * 资源分配：
  * T1 ---> UART
  * P1.0, P1.1, P1.2, P1.3 制冷制热设备控制
- * P0.0, P0.1, P0.2, P0.3 数码管显示及键盘设置
+ * P1.4, P1.5, P1.6, P1.7 数码管显示及键盘设置
  * P2, P0.4, P0.5 AD转换获取温度
+ * P3.6接LED，若程序运行正常，则LED每隔1000ms闪烁一次
  *
  *****************************************************/
 #include <reg51.h>
 #include "bluetooth.h"
-/* 系统时钟计数，50ms */
+/* 系统时钟计数，20ms */
 static uint16_t xdata systick = 0;
 
 uint16_t ModTemperture = 0;
@@ -25,12 +26,12 @@ sfr AUXR = 0x8e;
 static void hardware_init()
 {
     /*
-     * 定时器0初始化，溢出周期50ms
+     * 定时器0初始化，溢出周期20ms
      * 允许中断，且为高优先级
      */
     TMOD = 0x01;
-    TH0  = 0x3c;
-    TL0  = 0xb0;
+    TH0  = 0xb1;
+    TL0  = 0xe0;
     TCON = 0x11; 
     IE   = 0x83;
     IP   = 0x01;
@@ -65,22 +66,22 @@ void main()
 void system_scheduler()
 {
     /* 100ms执行一次 */
-    if (systick % 2)
+    if (systick % 5 == 0)
     {
         Task_10Hz_1();
     }
-    else
+    else if (systick % 5 == 1)
     {
         Task_10Hz_2();
     }
     
     /* 500ms执行一次 */
-    if (systick % 10)
+    if (systick % 25)
     {
         Task_2Hz();
     }
     /* 1000ms执行一次 */
-    if (systick % 20)
+    if (systick % 50)
     {
         Task_1Hz();
     }
@@ -88,6 +89,9 @@ void system_scheduler()
 
 void timer0() interrupt 1 using 1
 {
+    TH0  = 0xb1;
+    TL0  = 0xe0;
+    
     systick++;
     /*系统调度*/
     system_scheduler();
