@@ -13,11 +13,11 @@ void uart_send(uint8_t byte)
 }
 
 /*
- * ·¢ËÍÊı¾İºÍÖ¸Áî
+ * å‘é€æ•°æ®å’ŒæŒ‡ä»¤
  */
 void Send_data(uint16_t temperture, uint8_t instruction)
 {
-    /* ²ğ·Ö¸ß8Î»ºÍµÍ8Î» */
+    /* æ‹†åˆ†é«˜8ä½å’Œä½8ä½ */
     uint8_t Hbit = (uint8_t)((instruction << 4) | (temperture >> 8));
     uint8_t Lbit = (uint8_t)(temperture & 0x00ff);
     

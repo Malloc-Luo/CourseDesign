@@ -3,26 +3,26 @@
  * @author:   yuqi li
  * @data:     2020.12.11
  * @brief:    
- * ×ÊÔ´·ÖÅä£º
+ * èµ„æºåˆ†é…ï¼š
  * T1 ---> UART
  *
  *****************************************************/
 #include <reg51.h>
 #include "bluetooth.h"
 #include "LCDdisplay.h"
-/* ÏµÍ³Ê±ÖÓ¼ÆÊı£¬50ms */
+/* ç³»ç»Ÿæ—¶é’Ÿè®¡æ•°ï¼Œ50ms */
 static uint16_t xdata systick = 0;
 
 uint16_t ModTemperture = 0;
 uint16_t SetTemperture = 0;
 uint16_t RefTemperture = 0;
 
-/* Ó²¼ş³õÊ¼»¯·ÅÔÚÕâÀïÃæ */
+/* ç¡¬ä»¶åˆå§‹åŒ–æ”¾åœ¨è¿™é‡Œé¢ */
 static void hardware_init()
 {
     /*
-     * ¶¨Ê±Æ÷0³õÊ¼»¯£¬Òç³öÖÜÆÚ50ms
-     * ÔÊĞíÖĞ¶Ï£¬ÇÒÎª¸ßÓÅÏÈ¼¶
+     * å®šæ—¶å™¨0åˆå§‹åŒ–ï¼Œæº¢å‡ºå‘¨æœŸ50ms
+     * å…è®¸ä¸­æ–­ï¼Œä¸”ä¸ºé«˜ä¼˜å…ˆçº§
      */
     TMOD = 0x01;
     TH0  = 0x3c;
@@ -34,27 +34,30 @@ static void hardware_init()
     /*
      * your cod
      */
-	Init_Lcd();
+	  Init_Lcd();
 }
 
 
 void main()
 {
-    /* Ó²¼ş³õÊ¼»¯ */
+    /* ç¡¬ä»¶åˆå§‹åŒ– */
     hardware_init();
     
-    for (;;);
+    for (;;)
+		{
+			LCD_display(30,265);
+		}
 }
 
 
 /**********************FUNCTION***********************
- * @brief: ÏµÍ³µ÷¶ÈÆ÷
+ * @brief: ç³»ç»Ÿè°ƒåº¦å™¨
  * @return: None
- * @note:  ÔÚ´Ë´¦µ÷¶È
+ * @note:  åœ¨æ­¤å¤„è°ƒåº¦
  *****************************************************/
 static void system_scheduler()
 {
-    /* 100msÖ´ĞĞÒ»´Î */
+    /* 100msæ‰§è¡Œä¸€æ¬¡ */
     if (systick % 2)
     {
         Task_10Hz_1();
@@ -64,12 +67,12 @@ static void system_scheduler()
         Task_10Hz_2();
     }
     
-    /* 500msÖ´ĞĞÒ»´Î */
+    /* 500msæ‰§è¡Œä¸€æ¬¡ */
     if (systick % 10)
     {
         Task_2Hz();
     }
-    /* 1000msÖ´ĞĞÒ»´Î */
+    /* 1000msæ‰§è¡Œä¸€æ¬¡ */
     if (systick % 20)
     {
         Task_1Hz();
@@ -79,7 +82,7 @@ static void system_scheduler()
 void timer0() interrupt 1 using 1
 {
     systick++;
-    /*ÏµÍ³µ÷¶È*/
+    /*ç³»ç»Ÿè°ƒåº¦*/
     system_scheduler();
 }
 
