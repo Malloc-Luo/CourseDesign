@@ -25,4 +25,7 @@ extern uint8_t isSetValChanged;
  */
 extern uint8_t isResetRefVal;
 
+//LCD1602初始化
+void Init_Lcd(void);
 #endif
+

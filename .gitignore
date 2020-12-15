@@ -8,5 +8,6 @@
 *.uvopt
 *.o
 *.zip
+*.hex
 TMM
 RCM

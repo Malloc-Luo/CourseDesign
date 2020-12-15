@@ -9,6 +9,7 @@
  *****************************************************/
 #include <reg51.h>
 #include "bluetooth.h"
+#include "LCDdisplay.h"
 /* 系统时钟计数，50ms */
 static uint16_t xdata systick = 0;
 
@@ -42,6 +43,7 @@ static void hardware_init()
     TL1  = 0xfd;
     IE   = 0x90 | 0x83;
     TR1  = 1;
+	  Init_Lcd();
 }
 
 
@@ -50,7 +52,10 @@ void main()
     /* 硬件初始化 */
     hardware_init();
     
-    for (;;);
+    for (;;)
+		{
+			LCD_display(30,265);
+		}
 }
 
 
