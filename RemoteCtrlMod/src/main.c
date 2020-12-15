@@ -51,10 +51,22 @@ void main()
 {
     /* 硬件初始化 */
     hardware_init();
-    
+    SetTemperture=312;
+		ModTemperture=265;
+		RefTemperture = 100;
+	
     for (;;)
 		{
-			LCD_display(30,265);
+			if(isReset == 1)
+			{
+				LCD_clear();
+				display_reset();
+				isReset = 0;
+				LCD_clear();
+			}
+			
+			if(isReset == 0)
+			LCD_display(SetTemperture,ModTemperture);
 		}
 }
 
@@ -77,12 +89,12 @@ static void system_scheduler()
     }
     
     /* 500ms执行一次 */
-    if (systick % 10)
+    if (systick % 13 == 0)
     {
         Task_2Hz();
     }
     /* 1000ms执行一次 */
-    if (systick % 20)
+    if (systick % 50 == 0)
     {
         Task_1Hz();
     }

@@ -1,5 +1,6 @@
 #include "module.h"
 #include "bluetooth.h"
+#include "LCDdisplay.h"
 
 #define RCOFFLINE  0x01 /*遥控离线*/
 #define WORKNORMAL 0x02 /*正常工作*/
@@ -46,6 +47,7 @@ static void LED_state(uint8_t sta)
 
 void Task_10Hz_1()
 {    
+	
 }
 
 void Task_10Hz_2()
@@ -63,6 +65,7 @@ void Task_10Hz_2()
  */
 void Task_2Hz()
 {
+		
     static uint8_t state = 0;
     
     if (isRCOffline == 1)
@@ -75,6 +78,8 @@ void Task_2Hz()
     }
     
     LED_state(state);
+		
+		key_set();
 }
 
 void Task_1Hz()
