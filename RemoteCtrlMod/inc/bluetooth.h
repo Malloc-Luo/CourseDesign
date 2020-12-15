@@ -3,8 +3,12 @@
 #include "module.h"
 #include <reg51.h>
 
-void uart_send(uint8_t);
 void send_data(uint16_t temperture, uint8_t instruction);
-void recv_data(uint16_t *, uint8_t *);
+
+/*
+ * 离线检查遥控器
+ */
+extern uint8_t isRCOffline;
+extern uint8_t RCOfflineCheckCnt;
 
 #endif

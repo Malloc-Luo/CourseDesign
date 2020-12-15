@@ -3,42 +3,51 @@
  * @author:   yuqi li
  * @data:     2020.12.11
  * @brief:    
- * ×ÊÔ´·ÖÅä£º
+ * èµ„æºåˆ†é…ï¼š
  * T1 ---> UART
  *
  *****************************************************/
 #include <reg51.h>
 #include "bluetooth.h"
-/* ÏµÍ³Ê±ÖÓ¼ÆÊı£¬50ms */
+/* ç³»ç»Ÿæ—¶é’Ÿè®¡æ•°ï¼Œ50ms */
 static uint16_t xdata systick = 0;
 
 uint16_t ModTemperture = 0;
 uint16_t SetTemperture = 0;
 uint16_t RefTemperture = 0;
 
-/* Ó²¼ş³õÊ¼»¯·ÅÔÚÕâÀïÃæ */
+sfr AUXR = 0x8e;
+
+/* ç¡¬ä»¶åˆå§‹åŒ–æ”¾åœ¨è¿™é‡Œé¢ */
 static void hardware_init()
 {
     /*
-     * ¶¨Ê±Æ÷0³õÊ¼»¯£¬Òç³öÖÜÆÚ50ms
-     * ÔÊĞíÖĞ¶Ï£¬ÇÒÎª¸ßÓÅÏÈ¼¶
+     * å®šæ—¶å™¨0åˆå§‹åŒ–ï¼Œæº¢å‡ºå‘¨æœŸ20ms
+     * å…è®¸ä¸­æ–­ï¼Œä¸”ä¸ºé«˜ä¼˜å…ˆçº§
      */
     TMOD = 0x01;
-    TH0  = 0x3c;
-    TL0  = 0xb0;
+    TH0  = 0xb1;
+    TL0  = 0xe0;
     TCON = 0x11; 
     IE   = 0x83;
     IP   = 0x01;
     
     /*
-     * your cod
+     * ä¸²å£åˆå§‹åŒ–ï¼Œæ³¢ç‰¹ç‡9600ï¼Œ1åœæ­¢ä½ï¼Œå¶æ ¡éªŒ
      */
+    TMOD = 0x01 | 0x20;
+    SCON = 0x50;
+    AUXR = 0x00;
+    TH1  = 0xfd;
+    TL1  = 0xfd;
+    IE   = 0x90 | 0x83;
+    TR1  = 1;
 }
 
 
 void main()
 {
-    /* Ó²¼ş³õÊ¼»¯ */
+    /* ç¡¬ä»¶åˆå§‹åŒ– */
     hardware_init();
     
     for (;;);
@@ -46,28 +55,28 @@ void main()
 
 
 /**********************FUNCTION***********************
- * @brief: ÏµÍ³µ÷¶ÈÆ÷
+ * @brief: ç³»ç»Ÿè°ƒåº¦å™¨
  * @return: None
- * @note:  ÔÚ´Ë´¦µ÷¶È
+ * @note:  åœ¨æ­¤å¤„è°ƒåº¦
  *****************************************************/
 static void system_scheduler()
 {
-    /* 100msÖ´ĞĞÒ»´Î */
-    if (systick % 2)
+    /* 100msæ‰§è¡Œä¸€æ¬¡ */
+    if (systick % 5 == 0)
     {
         Task_10Hz_1();
     }
-    else
+    else if (systick % 5 == 1)
     {
         Task_10Hz_2();
     }
     
-    /* 500msÖ´ĞĞÒ»´Î */
+    /* 500msæ‰§è¡Œä¸€æ¬¡ */
     if (systick % 10)
     {
         Task_2Hz();
     }
-    /* 1000msÖ´ĞĞÒ»´Î */
+    /* 1000msæ‰§è¡Œä¸€æ¬¡ */
     if (systick % 20)
     {
         Task_1Hz();
@@ -76,8 +85,11 @@ static void system_scheduler()
 
 void timer0() interrupt 1 using 1
 {
+    TH0  = 0xb1;
+    TL0  = 0xe0;
+    
     systick++;
-    /*ÏµÍ³µ÷¶È*/
+    /*ç³»ç»Ÿè°ƒåº¦*/
     system_scheduler();
 }
 

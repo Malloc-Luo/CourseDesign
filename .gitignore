@@ -7,6 +7,6 @@
 *.uvgui.*
 *.uvopt
 *.o
-
+*.zip
 TMM
 RCM
