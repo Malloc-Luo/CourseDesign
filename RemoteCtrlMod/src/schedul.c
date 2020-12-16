@@ -66,6 +66,7 @@ void Task_10Hz_2()
 void Task_5Hz()
 {
     bt_send_data(&SlaveCmd, &SetTemperture);
+		key_set();
 }
 
 /*
@@ -88,7 +89,6 @@ void Task_2Hz()
     
     LED_state(state);
 		
-		key_set();
 }
 
 void Task_1Hz()

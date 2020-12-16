@@ -17,19 +17,28 @@ extern uint16_t get_setval(void);
  * 如果按键状态发生改变将这个值置1
  * 后续由用户手动清零
  */
-extern uint8_t isSetValChanged;
+extern uint8_t xdata isSetValChanged;
 
 /*
  * 是否重置参考值(最低值)，若重置参考值的按键被按下则改位置1
  * 使用后手动清零
  */
-extern uint8_t isResetRefVal;
+extern uint8_t xdata isResetRefVal;
 
 //判断是否重置，若重置则置1，显示重置成功后置0
-extern uint8_t isReset;
+extern uint8_t xdata isReset;
+
+//判断是否展示最低参考值
+extern uint8_t xdata isShowRef;
+
+//判断是否超出设定范围
+extern uint8_t isBelow;
 
 //显示重置成功
 extern void display_reset(void);
+
+//展示最低参考值
+extern void display_reftemp(unsigned int reftemp);
 
 //按键操作
 extern void key_set(void);
