@@ -66,7 +66,7 @@ void Task_10Hz_2()
 void Task_5Hz()
 {
     bt_send_data(&SlaveCmd, &SetTemperture);
-		key_set();
+		key_set(); //遥控器按键操作
 }
 
 /*

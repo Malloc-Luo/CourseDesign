@@ -300,17 +300,18 @@ void LCD_display(uint16_t setval, uint16_t actulval)
 
 void key_set()
 {
-		if (S1 == 0)
+		if (S1 == 0)   //重置最低参考值
 		{
 			isReset = 1;
 			isResetRefVal = 1;
 		}
 		
-		if (S2 == 0)
+		if (S2 == 0)  //展示温度设定范围
 		{
 			isShowRef = 1;
 		}
 		
+		//***对设定温度加减***
 		if (S7 == 0)
 			SetTemperture = SetTemperture + 100;
 		if (S8 == 0)
@@ -324,12 +325,13 @@ void key_set()
 		if (S4 == 0)
 			SetTemperture = SetTemperture - 1;
 		
+		
+		//设定温度超出参考范围时
 		if (SetTemperture > 999)
 		{
 				SetTemperture = 999;
 				isBelow = 1;
 		}
-			
 			
 		if (SetTemperture < RefTemperture)
 		{
@@ -337,6 +339,7 @@ void key_set()
 				isBelow = 1;
 		}
 		
+		//改变温度设定值
 		if(P1 != 0xff | 0x7f)
 			isSetValChanged = 1;
 		
@@ -352,7 +355,7 @@ void display_reset()
 	delay1(1000);
 }
 
-//展示最低设定值
+//展示温度设定参考范围
 void display_reftemp(uint16_t reftemp)
 {
 	uint8_t str_minreftemp[] = " MINTemp:";
