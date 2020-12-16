@@ -2,8 +2,8 @@
 #include "module.h"
 #include "bluetooth.h"
 
-static const uint8_t FRAME_HEADER = 0xa5;
-static uint8_t Buffer[3] = { 0x00, 0x00, 0x00 };
+static const uint8_t xdata FRAME_HEADER = 0xa5;
+static uint8_t xdata Buffer[3] = { 0x00, 0x00, 0x00 };
 uint8_t isRCOffline = 0;
 uint8_t RCOfflineCheckCnt = 0;
 
@@ -49,10 +49,14 @@ static void parsing_instruction()
         /* 重置温度参考值*/
         case RESET:
         {
-            RefTemperture = ModTemperture;
+            RefTemperture = temp;
             break;
         }
         case ACTUL_VAL:
+        {
+            ModTemperture = temp;
+            break;
+        }
         default:
             break;
     }
@@ -89,5 +93,7 @@ void UART_Handler() interrupt 4 using 3
                 parsing_instruction();
             }
         }
+        
+        RI = 0;
     }
 }

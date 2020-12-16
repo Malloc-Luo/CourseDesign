@@ -13,9 +13,9 @@
 /* 系统时钟计数，50ms */
 static uint16_t xdata systick = 0;
 
-uint16_t ModTemperture = 0;
-uint16_t SetTemperture = 0;
-uint16_t RefTemperture = 0;
+uint16_t ModTemperture = 666;
+uint16_t SetTemperture = 233;
+uint16_t RefTemperture = 233;
 uint8_t SlaveCmd = SET_VAL;
 
 sfr AUXR = 0x8e;
@@ -53,23 +53,21 @@ void main()
 {
     /* 硬件初始化 */
     hardware_init();
-    SetTemperture=312;
-		ModTemperture=265;
-		RefTemperture = 100;
 	
     for (;;)
-		{
-			if(isReset == 1)
-			{
-				LCD_clear();
-				display_reset();
-				isReset = 0;
-				LCD_clear();
-			}
-			
-			if(isReset == 0)
-			LCD_display(SetTemperture,ModTemperture);
-		}
+    {
+        if(isReset == 1)
+        {
+            LCD_clear();
+            display_reset();
+            isReset = 0;
+            LCD_clear();
+        }
+        else
+        {
+            LCD_display(SetTemperture,ModTemperture);
+        }
+    }
 }
 
 
@@ -95,11 +93,12 @@ static void system_scheduler()
         Task_5Hz();
     }
     
-    /* 500ms执行一次 */
+    /* 260ms执行一次 */
     if (systick % 13 == 0)
     {
         Task_2Hz();
     }
+    
     /* 1000ms执行一次 */
     if (systick % 50 == 0)
     {

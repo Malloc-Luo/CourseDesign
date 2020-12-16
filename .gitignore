@@ -1,3 +1,4 @@
+*.hex
 *.__i
 *.obj
 *.lnp
@@ -8,6 +9,5 @@
 *.uvopt
 *.o
 *.zip
-*.hex
 TMM
 RCM

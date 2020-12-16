@@ -65,6 +65,16 @@ void Task_10Hz_2()
 
 void Task_5Hz()
 {
+    if (isResetRefVal == 1)
+    {
+        SlaveCmd = RESET;
+        isResetRefVal = 0;
+    }
+    else
+    {
+        SlaveCmd = SET_VAL;
+    }
+    
     bt_send_data(&SlaveCmd, &SetTemperture);
 }
 
@@ -74,7 +84,6 @@ void Task_5Hz()
  */
 void Task_2Hz()
 {
-		
     static uint8_t state = 0;
     
     if (isRCOffline == 1)
@@ -87,8 +96,7 @@ void Task_2Hz()
     }
     
     LED_state(state);
-		
-		key_set();
+	key_set();
 }
 
 void Task_1Hz()
