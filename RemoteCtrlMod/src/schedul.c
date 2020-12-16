@@ -76,6 +76,7 @@ void Task_5Hz()
     }
     
     bt_send_data(&SlaveCmd, &SetTemperture);
+		key_set(); //遥控器按键操作
 }
 
 /*
@@ -96,7 +97,7 @@ void Task_2Hz()
     }
     
     LED_state(state);
-	key_set();
+		
 }
 
 void Task_1Hz()

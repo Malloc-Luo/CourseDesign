@@ -45,7 +45,7 @@ static void hardware_init()
     IE   = 0x90 | 0x83;
     TR1  = 1;
     
-	Init_Lcd();
+		Init_Lcd();
 }
 
 
@@ -55,19 +55,27 @@ void main()
     hardware_init();
 	
     for (;;)
-    {
-        if(isReset == 1)
-        {
-            LCD_clear();
-            display_reset();
-            isReset = 0;
-            LCD_clear();
-        }
-        else
-        {
-            LCD_display(SetTemperture,ModTemperture);
-        }
-    }
+		{
+			if(isReset == 1) //如果按下重置参考值键，展示重置成功
+			{
+				LCD_clear();//清屏
+				display_reset();
+				isReset = 0;
+				LCD_clear();
+			}
+			
+			if(isReset == 0 )//没有按重置参考值键（S1）时，展示实时温度和设定温度
+				LCD_display (SetTemperture,ModTemperture);
+			
+			if(isShowRef == 1 | isBelow ==1)//按下展示参考范围键（S2）或者当设定温度超出设定范围时，展示设定温度范围
+			{
+				LCD_clear();
+				display_reftemp(RefTemperture);
+				isShowRef = 0;
+				isBelow = 0;
+				LCD_clear();
+			}
+		}
 }
 
 
@@ -93,8 +101,8 @@ static void system_scheduler()
         Task_5Hz();
     }
     
-    /* 260ms执行一次 */
-    if (systick % 13 == 0)
+    /* 500ms执行一次 */
+    if (systick % 25 == 0)
     {
         Task_2Hz();
     }
