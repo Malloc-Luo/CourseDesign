@@ -25,6 +25,19 @@ extern uint8_t isSetValChanged;
  */
 extern uint8_t isResetRefVal;
 
+//判断是否重置，若重置则置1，显示重置成功后置0
+extern uint8_t isReset;
+
+//显示重置成功
+extern void display_reset(void);
+
+//按键操作
+extern void key_set(void);
+
+//LCD清屏
+extern void LCD_clear(void);
+
+
 //LCD1602初始化
 void Init_Lcd(void);
 #endif

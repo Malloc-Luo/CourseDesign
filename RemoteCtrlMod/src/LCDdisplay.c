@@ -8,15 +8,29 @@
  */
 uint8_t isSetValChanged = 0;
 uint8_t isResetRefVal = 0;
+uint8_t isReset = 0;
 
-sbit SCL = P2^0;
+
+sbit SCL = P2^0;//LCD
 sbit SDA = P2^1;
+
+sbit S1 = P1^0;//遥控器按键
+sbit S2 = P1^1;
+sbit S3 = P1^2;
+sbit S4 = P1^3;
+sbit S5 = P1^4;
+sbit S6 = P1^5;
+sbit S7 = P1^6;
+sbit S8 = P1^7;
+
 
 
 char ADDR = 0x4E;    // PCF8574  T  模块的地址码
 
 unsigned char str_set[] = "Preset";
 unsigned char str_actul[] = "Actual";
+unsigned char str_reset0[] = "Reset";
+unsigned char str_reset1[] = "Successfully";
 unsigned char degree_centi[]={0x16,0x09,0x08,0x08,0x08,0x09,0x06,0x00};//自定义字符
 
 unsigned char *s1=str_set;
@@ -31,10 +45,13 @@ void delay1(int y)   //
       
         while(y--)
         {
-        unsigned char a,c;
+        unsigned char a,b,c;
         for(c=1;c>0;c--)
         {	
+					for(b=20;b>0;b--)
+					{
 						for(a=2;a>0;a--);
+					}
 				}
         }
 }
@@ -282,3 +299,48 @@ void LCD_display(unsigned int setval, unsigned int actulval)
 
 //遥控器按键设置
 
+void key_set()
+{
+		if (S1 == 0)
+		{
+			isReset = 1;
+			isResetRefVal = 1;
+		}
+		
+		if (S7 == 0)
+			SetTemperture = SetTemperture + 100;
+		if (S8 == 0)
+			SetTemperture = SetTemperture - 100;
+		if (S5 == 0)
+			SetTemperture = SetTemperture + 10;
+		if (S6 == 0)
+			SetTemperture = SetTemperture - 10;
+		if (S3 == 0)
+			SetTemperture = SetTemperture + 1;
+		if (S4 == 0)
+			SetTemperture = SetTemperture - 1;
+		
+		if (SetTemperture > 999)
+				SetTemperture = 999;
+			
+		if (SetTemperture < RefTemperture)
+				SetTemperture = RefTemperture;
+		
+		if(P1 != 0xff | 0x7f)
+			isSetValChanged = 1;
+		
+}
+
+//展示重置成功
+void display_reset()
+{
+	Write_LCD(5,0,str_reset0);
+	Write_LCD(2,1,str_reset1);
+	delay1(1000);
+}
+
+void LCD_clear()
+{
+	LCD_write_command(0x01);
+}
+	
