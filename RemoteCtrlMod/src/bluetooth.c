@@ -3,7 +3,7 @@
 #include "bluetooth.h"
 
 static const uint8_t xdata FRAME_HEADER = 0xa5;
-static uint8_t xdata Buffer[3] = { 0x00, 0x00, 0x00 };
+static uint8_t data Buffer[4] = { 0x00, 0x00, 0x00 };
 uint8_t isRCOffline = 0;
 uint8_t RCOfflineCheckCnt = 0;
 
@@ -30,13 +30,14 @@ void bt_send_data(uint8_t *cmd, uint16_t *dat)
     uart_send(*(ptr + 0));
     uart_send(*(ptr + 1));
 }
+
 /*
  * 解析指令
  */
 static void parsing_instruction()
 {
-    uint8_t instruct = Buffer[0];
-    uint16_t temp =  *(uint16_t *)(Buffer + 1);
+    uint8_t instruct = Buffer[1];
+    uint16_t temp =  *(uint16_t *)(Buffer + 2);
     
     switch (instruct)
     {
@@ -62,14 +63,13 @@ static void parsing_instruction()
     }
 }
 
+/* 准备接收标志 */
+static uint8_t isReadyRecv = 0;
+/* 接收计数 */
+static uint8_t recvCnt = 0;
 
 void UART_Handler() interrupt 4 using 3
 {
-    /* 准备接收标志 */
-    static uint8_t isReadyRecv = 0;
-    /* 接收计数 */
-    static uint8_t recvCnt = 0;
-    
     if (RI == 1)
     {
         uint8_t buff = SBUF;
@@ -85,7 +85,7 @@ void UART_Handler() interrupt 4 using 3
         {
             Buffer[recvCnt++] = buff;
             
-            if (recvCnt == 3)
+            if (recvCnt == 4)
             {
                 isReadyRecv = 0;
                 recvCnt = 0;

@@ -65,6 +65,7 @@ void Task_10Hz_2()
 
 void Task_5Hz()
 {
+    key_set(); //遥控器按键操作
     if (isResetRefVal == 1)
     {
         SlaveCmd = RESET;
@@ -75,8 +76,7 @@ void Task_5Hz()
         SlaveCmd = SET_VAL;
     }
     
-    bt_send_data(&SlaveCmd, &SetTemperture);
-		key_set(); //遥控器按键操作
+    bt_send_data(&SlaveCmd, &SetTemperture);	
 }
 
 /*
@@ -100,6 +100,6 @@ void Task_2Hz()
 		
 }
 
-void Task_1Hz()
-{
-}
+//void Task_1Hz()
+//{
+//}
