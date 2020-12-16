@@ -3,7 +3,7 @@
 #include "module.h"
 #include <reg51.h>
 
-void send_data(uint16_t temperture, uint8_t instruction);
+void bt_send_data(uint8_t *cmd, uint16_t *dat);
 
 /*
  * 离线检查遥控器

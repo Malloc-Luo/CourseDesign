@@ -46,6 +46,8 @@ extern uint8_t SlaveCmd;
 // 10Hz
 extern void Task_10Hz_1();
 extern void Task_10Hz_2();
+
+extern void Task_5Hz();
 // 2Hz
 extern void Task_2Hz();
 extern void Task_1Hz();

@@ -27,18 +27,18 @@ static void LED_state(uint8_t sta)
         case WORKNORMAL:
             if (cnt == 2 || cnt == 4)
             {
-                LED = 1;
+                LED = 0;
             }
             else
             {
-                LED = 0;
+                LED = 1;
             }
             break;
         default:
             break;
     }
     
-    if (++cnt > 5)
+    if (++cnt > 8)
     {
         cnt = 0;
     }
@@ -55,6 +55,15 @@ void Task_10Hz_2()
     {
         isRCOffline = 1;
     }
+    else
+    {
+        isRCOffline = 0;
+    }
+}
+
+void Task_5Hz()
+{
+    bt_send_data(&SlaveCmd, &SetTemperture);
 }
 
 /*

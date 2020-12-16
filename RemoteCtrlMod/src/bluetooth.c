@@ -3,7 +3,7 @@
 #include "bluetooth.h"
 
 static const uint8_t FRAME_HEADER = 0xa5;
-static uint8_t Buffer[2] = { 0x00, 0x00 };
+static uint8_t Buffer[3] = { 0x00, 0x00, 0x00 };
 uint8_t isRCOffline = 0;
 uint8_t RCOfflineCheckCnt = 0;
 
@@ -19,24 +19,24 @@ static void uart_send(uint8_t byte)
 /*
  * 发送数据和指令
  */
-void send_data(uint16_t temperture, uint8_t instruction)
+void bt_send_data(uint8_t *cmd, uint16_t *dat)
 {
-    /* 拆分高8位和低8位 */
-    uint8_t Hbit = (uint8_t)((instruction << 4) | ((temperture >> 8) & 0x0f));
-    uint8_t Lbit = (uint8_t)(temperture & 0x00ff);
-    
+    uint8_t * ptr = (uint8_t *)dat;
+    /* 数据帧头0xa5 */
     uart_send(FRAME_HEADER);
-    uart_send(Hbit);
-    uart_send(Lbit);
+    /* 指令帧 */
+    uart_send(*cmd);
+    /* 数据帧 */
+    uart_send(*(ptr + 0));
+    uart_send(*(ptr + 1));
 }
-
 /*
  * 解析指令
  */
 static void parsing_instruction()
 {
-    uint8_t instruct = Buffer[0] >> 4;
-    uint16_t temp = (((uint16_t)Buffer[0]) << 8 | (uint16_t)Buffer[1]);
+    uint8_t instruct = Buffer[0];
+    uint16_t temp =  *(uint16_t *)(Buffer + 1);
     
     switch (instruct)
     {
@@ -81,7 +81,7 @@ void UART_Handler() interrupt 4 using 3
         {
             Buffer[recvCnt++] = buff;
             
-            if (recvCnt == 2)
+            if (recvCnt == 3)
             {
                 isReadyRecv = 0;
                 recvCnt = 0;

@@ -16,6 +16,7 @@ static uint16_t xdata systick = 0;
 uint16_t ModTemperture = 0;
 uint16_t SetTemperture = 0;
 uint16_t RefTemperture = 0;
+uint8_t SlaveCmd = SET_VAL;
 
 sfr AUXR = 0x8e;
 
@@ -43,7 +44,8 @@ static void hardware_init()
     TL1  = 0xfd;
     IE   = 0x90 | 0x83;
     TR1  = 1;
-	  Init_Lcd();
+    
+	Init_Lcd();
 }
 
 
@@ -53,9 +55,9 @@ void main()
     hardware_init();
     
     for (;;)
-		{
-			LCD_display(30,265);
-		}
+    {
+        LCD_display(30,265);
+    }
 }
 
 
@@ -76,13 +78,18 @@ static void system_scheduler()
         Task_10Hz_2();
     }
     
+    if (systick % 10 == 1)
+    {
+        Task_5Hz();
+    }
+    
     /* 500ms执行一次 */
-    if (systick % 10)
+    if (systick % 25 == 0)
     {
         Task_2Hz();
     }
     /* 1000ms执行一次 */
-    if (systick % 20)
+    if (systick % 50 == 0)
     {
         Task_1Hz();
     }
