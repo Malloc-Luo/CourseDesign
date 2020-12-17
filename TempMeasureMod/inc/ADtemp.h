@@ -3,14 +3,14 @@
 #include "module.h"
 
 /*
- * »ñÈ¡µ±Ç°ÎÂ¶ÈÖµ 0~999
+ * è·å–å½“å‰æ¸©åº¦å€¼ 0~999
  */
 extern uint16_t get_actulval(void); 
 
 /*
- * ÖÆÀä¡¢ÖÆÈÈ
- * state = 0 ÖÆÀä
- * state = 1 ÖÆÈÈ
+ * åˆ¶å†·ã€åˆ¶çƒ­
+ * state = 0 åˆ¶å†·
+ * state = 1 åˆ¶çƒ­
  */
 extern void ctrl_device(uint8_t state);
 

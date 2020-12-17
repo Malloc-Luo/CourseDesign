@@ -17,11 +17,11 @@ static void uart_send(uint8_t byte)
 }
 
 /*
- * ·¢ËÍÊı¾İºÍÖ¸Áî
+ * å‘é€æ•°æ®å’ŒæŒ‡ä»¤
  */
 void send_data(uint16_t temperture, uint8_t instruction)
 {
-    /* ²ğ·Ö¸ß8Î»ºÍµÍ8Î» */
+    /* æ‹†åˆ†é«˜8ä½å’Œä½8ä½ */
     uint8_t Hbit = (uint8_t)((instruction << 4) | ((temperture >> 8) & 0x0f));
     uint8_t Lbit = (uint8_t)(temperture & 0x00ff);
     
@@ -31,7 +31,7 @@ void send_data(uint16_t temperture, uint8_t instruction)
 }
 
 /*
- * ½âÎöÖ¸Áî
+ * è§£ææŒ‡ä»¤
  */
 static void parsing_instruction()
 {
@@ -40,13 +40,13 @@ static void parsing_instruction()
     
     switch (instruct)
     {
-        /* ĞŞ¸ÄÉè¶¨Öµ */
+        /* ä¿®æ”¹è®¾å®šå€¼ */
         case SET_VAL:
         {
             SetTemperture = temp;
             break;
         }
-        /* ÖØÖÃÎÂ¶È²Î¿¼Öµ*/
+        /* é‡ç½®æ¸©åº¦å‚è€ƒå€¼*/
         case RESET:
         {
             RefTemperture = ModTemperture;
@@ -61,17 +61,17 @@ static void parsing_instruction()
 
 void UART_Handler() interrupt 4 using 3
 {
-    /* ×¼±¸½ÓÊÕ±êÖ¾ */
+    /* å‡†å¤‡æ¥æ”¶æ ‡å¿— */
     static uint8_t isReadyRecv = 0;
-    /* ½ÓÊÕ¼ÆÊı */
+    /* æ¥æ”¶è®¡æ•° */
     static uint8_t recvCnt = 0;
     
     if (RI == 1)
     {
         uint8_t buff = SBUF;
-        /* Çå³ıÀëÏß±êÖ¾ */
+        /* æ¸…é™¤ç¦»çº¿æ ‡å¿— */
         isRCOffline = 0;
-        /*½ÓÊÕµ½ÁËÖ¡Í·*/
+        /*æ¥æ”¶åˆ°äº†å¸§å¤´*/
         if (buff == FRAME_HEADER)
         {
             isReadyRecv = 1;
@@ -85,7 +85,7 @@ void UART_Handler() interrupt 4 using 3
             {
                 isReadyRecv = 0;
                 recvCnt = 0;
-                /* ´¦ÀíÊı¾İ */
+                /* å¤„ç†æ•°æ® */
                 parsing_instruction();
             }
         }

@@ -1,20 +1,20 @@
 #include "module.h"
 #include "bluetooth.h"
 
-#define RCOFFLINE  0x01 /*Ò£¿ØÀëÏß*/
-#define WORKNORMAL 0x02 /*Õý³£¹¤×÷*/
+#define RCOFFLINE  0x01 /*é¥æŽ§ç¦»çº¿*/
+#define WORKNORMAL 0x02 /*æ­£å¸¸å·¥ä½œ*/
 
 /*
- * P3.6½ÓLED
+ * P3.6æŽ¥LED
  */
 sbit LED = P3 ^ 6; 
 
 
 /**********************FUNCTION***********************
- * @brief: ÏÂÎ»»ú×´Ì¬ÏÔÊ¾
- * @param: sta: ÏÂÎ»»ú×´Ì¬£¬RCOFFLINE WORKNORMAL
- * @note: Èç¹ûÒ£¿ØÆ÷ÀëÏßÖ¸Ê¾LEDÒÔ1000msµÄÖÜÆÚ¿ìÉÁ
- *        Èç¹ûÕý³£¹¤×÷LEDÃ¿¸ô1000msÉÁË¸Á½´Î
+ * @brief: ä¸‹ä½æœºçŠ¶æ€æ˜¾ç¤º
+ * @param: sta: ä¸‹ä½æœºçŠ¶æ€ï¼ŒRCOFFLINE WORKNORMAL
+ * @note: å¦‚æžœé¥æŽ§å™¨ç¦»çº¿æŒ‡ç¤ºLEDä»¥1000msçš„å‘¨æœŸå¿«é—ª
+ *        å¦‚æžœæ­£å¸¸å·¥ä½œLEDæ¯éš”1000msé—ªçƒä¸¤æ¬¡
  *****************************************************/
 static void LED_state(uint8_t sta)
 {
@@ -50,7 +50,7 @@ void Task_10Hz_1()
 
 void Task_10Hz_2()
 {
-    /* ÀëÏß¼ì²â¼ÆÊý, ³¬¹ý1000msÈÏÎªÀëÏß */
+    /* ç¦»çº¿æ£€æµ‹è®¡æ•°, è¶…è¿‡1000msè®¤ä¸ºç¦»çº¿ */
     if (RCOfflineCheckCnt++ > 10)
     {
         isRCOffline = 1;
@@ -58,7 +58,7 @@ void Task_10Hz_2()
 }
 
 /*
- * Ö´ÐÐÖÜÆÚ500ms
+ * æ‰§è¡Œå‘¨æœŸ500ms
  */
 void Task_2Hz()
 {
