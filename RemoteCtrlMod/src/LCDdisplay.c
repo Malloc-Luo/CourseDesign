@@ -6,12 +6,12 @@
  * 注意！当按键有改变数字的时候或者发出重置命令的时候
  * 将这两个变量置1
  */
-uint8_t xdata isSetValChanged = 0;
-uint8_t xdata isResetRefVal = 0;
-uint8_t xdata isReset = 0;
-uint8_t xdata isShowRef = 0;
+bit isSetValChanged = 0;
+bit isResetRefVal = 0;
+bit isReset = 0;
+bit isShowRef = 0;
 
-uint8_t isBelow = 0;
+bit isBelow = 0;
 
 sbit SCL = P2 ^ 0; //LCD
 sbit SDA = P2 ^ 1;
@@ -29,9 +29,8 @@ char ADDR = 0x4E;    // PCF8574  T  模块的地址码
 
 uint8_t degree_centi[] = {0x16, 0x09, 0x08, 0x08, 0x08, 0x09, 0x06, 0x00}; //自定义字符
 
-
-uint8_t set_value = 0;
-uint8_t actul_value = 0;
+uint8_t code str_set[] = "Preset";
+uint8_t code str_actul[] = "Actual";
 
 //***************************** 延时 y  ms ***********************************************
 
@@ -254,8 +253,7 @@ void setchar()
 //LCD显示 实际值、设定值
 void LCD_display(uint16_t setval, uint16_t actulval)
 {
-    uint8_t str_set[] = "Preset";
-    uint8_t str_actul[] = "Actual";
+    
 
     uint8_t setval_100, setval_10, setval_1;
     uint8_t actulval_100, actulval_10, actulval_1;

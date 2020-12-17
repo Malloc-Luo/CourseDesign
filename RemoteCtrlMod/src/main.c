@@ -11,7 +11,7 @@
 #include "bluetooth.h"
 #include "LCDdisplay.h"
 /* 系统时钟计数，50ms */
-static uint16_t xdata systick = 0;
+static uint16_t volatile data systick = 0;
 
 uint16_t ModTemperture = 666;
 uint16_t SetTemperture = 233;
@@ -45,7 +45,7 @@ static void hardware_init()
     IE   = 0x90 | 0x83;
     TR1  = 1;
     
-		Init_Lcd();
+	Init_Lcd();
 }
 
 

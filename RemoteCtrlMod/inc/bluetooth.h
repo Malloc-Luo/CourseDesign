@@ -8,7 +8,7 @@ void bt_send_data(uint8_t *cmd, uint16_t *dat);
 /*
  * 离线检查遥控器
  */
-extern uint8_t isRCOffline;
+extern volatile bit isRCOffline;
 extern uint8_t RCOfflineCheckCnt;
 
 #endif
