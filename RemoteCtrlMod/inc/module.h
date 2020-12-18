@@ -38,7 +38,6 @@ extern uint16_t RefTemperture;
 #define RESET     0x04
 
 extern uint8_t SlaveCmd;
-
 /*
  * 任务函数
  */
@@ -50,7 +49,5 @@ extern void Task_10Hz_2();
 extern void Task_5Hz();
 // 2Hz
 extern void Task_2Hz();
-extern void Task_1Hz();
-
 
 #endif

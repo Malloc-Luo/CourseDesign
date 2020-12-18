@@ -46,11 +46,6 @@ static void LED_state(uint8_t sta)
 }
 
 void Task_10Hz_1()
-{    
-	
-}
-
-void Task_10Hz_2()
 {
     /* 离线检测计数, 超过1000ms认为离线 */
     if (RCOfflineCheckCnt++ > 10)
@@ -97,9 +92,4 @@ void Task_2Hz()
     }
     
     LED_state(state);
-		
 }
-
-//void Task_1Hz()
-//{
-//}

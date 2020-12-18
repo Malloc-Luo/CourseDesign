@@ -11,7 +11,7 @@
 #include "bluetooth.h"
 #include "LCDdisplay.h"
 /* 系统时钟计数，50ms */
-static uint16_t volatile data systick = 0;
+static volatile uint16_t data systick = 0;
 
 uint16_t ModTemperture = 666;
 uint16_t SetTemperture = 233;
@@ -91,10 +91,6 @@ static void system_scheduler()
     {
         Task_10Hz_1();
     }
-    else if (systick % 5 == 1)
-    {
-        Task_10Hz_2();
-    }
     
     if (systick % 10 == 1)
     {
@@ -102,16 +98,10 @@ static void system_scheduler()
     }
     
     /* 500ms执行一次 */
-    if (systick % 25 == 0)
+    if (systick % 25 == 2)
     {
         Task_2Hz();
     }
-    
-    /* 1000ms执行一次 */
-//    if (systick % 50 == 0)
-//    {
-//        Task_1Hz();
-//    }
 }
 
 void timer0() interrupt 1 using 1
