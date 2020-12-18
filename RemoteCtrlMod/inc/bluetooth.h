@@ -3,7 +3,7 @@
 #include "module.h"
 #include <reg51.h>
 
-void bt_send_data(uint8_t *cmd, uint16_t *dat);
+void bt_send_data(uint8_t *cmd, int16_t *dat);
 
 /*
  * 离线检查遥控器

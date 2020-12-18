@@ -251,10 +251,9 @@ void setchar()
 
 //*************************************************************************************************
 //LCD显示 实际值、设定值
-void LCD_display(uint16_t setval, uint16_t actulval)
+void LCD_display(int16_t setval, int16_t actulval)
 {
-    
-
+   
     uint8_t setval_100, setval_10, setval_1;
     uint8_t actulval_100, actulval_10, actulval_1;
 

@@ -19,7 +19,7 @@ static void uart_send(uint8_t byte)
 /*
  * 发送数据和指令
  */
-void bt_send_data(uint8_t *cmd, uint16_t *dat)
+void bt_send_data(uint8_t *cmd, int16_t *dat)
 {
     uint8_t * ptr = (uint8_t *)dat;
     /* 数据帧头0xa5 */
@@ -37,7 +37,7 @@ void bt_send_data(uint8_t *cmd, uint16_t *dat)
 static void parsing_instruction()
 {
     uint8_t instruct = Buffer[1];
-    uint16_t temp =  *(uint16_t *)(Buffer + 2);
+    int16_t temp =  *(int16_t *)(Buffer + 2);
     
     switch (instruct)
     {

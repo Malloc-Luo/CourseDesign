@@ -6,12 +6,12 @@
  * 1602LCD温度显示
  * setval: 设定值  actulval: 实际值 范围0~999，拆分成三个整数
  */
-extern void LCD_display(uint16_t setval, uint16_t actulval); 
+extern void LCD_display(int16_t setval, int16_t actulval); 
 
 /*
  * 获取温度设定值
  */
-extern uint16_t get_setval(void);
+extern int16_t get_setval(void);
 
 /*
  * 如果按键状态发生改变将这个值置1

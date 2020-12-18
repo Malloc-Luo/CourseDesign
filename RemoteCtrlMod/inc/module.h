@@ -18,17 +18,17 @@ typedef signed long int32_t;
  * 温控模块的温度
  * 将获取到的温度 * 10后转换成16位整形
  */
-extern uint16_t ModTemperture;
+extern int16_t ModTemperture;
 
 /*
  * 设定的温度值，在LCDdisplay.h中管理
  */
-extern uint16_t SetTemperture;
+extern int16_t SetTemperture;
 
 /*
  * 最低参考温度，温度设定值不能低于这个值
  */
-extern uint16_t RefTemperture;
+extern int16_t RefTemperture;
 
 /*
  * 下位机指令
