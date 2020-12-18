@@ -14,11 +14,13 @@
 #include <reg51.h>
 #include "bluetooth.h"
 /* 系统时钟计数，20ms */
-static uint16_t xdata systick = 0;
+static volatile uint16_t data systick = 0;
 
-uint16_t ModTemperture = 0;
-uint16_t SetTemperture = 0;
-uint16_t RefTemperture = 0;
+int16_t ModTemperture = 0;
+int16_t SetTemperture = 0;
+int16_t RefTemperture = 0;
+uint8_t MasterCmd = ACTUL_VAL;
+uint8_t RecvMasterCmd = SET_VAL;
 
 sfr AUXR = 0x8e;
 
@@ -70,22 +72,20 @@ void system_scheduler()
     {
         Task_10Hz_1();
     }
-    else if (systick % 5 == 1)
+    
+    /* 200ms执行一次 */
+    if (systick % 10 == 3)
     {
-        Task_10Hz_2();
+        Task_5Hz();
     }
     
     /* 500ms执行一次 */
-    if (systick % 25)
+    if (systick % 25 == 2)
     {
         Task_2Hz();
     }
-    /* 1000ms执行一次 */
-    if (systick % 50)
-    {
-        Task_1Hz();
-    }
 }
+
 
 void timer0() interrupt 1 using 1
 {

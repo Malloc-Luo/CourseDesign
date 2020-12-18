@@ -3,12 +3,12 @@
 #include "module.h"
 #include <reg51.h>
 
-void send_data(uint16_t temperture, uint8_t instruction);
+void bt_send_data(uint8_t *cmd, int16_t *dat);
 
 /*
- * ÀëÏß¼ì²éÒ£¿ØÆ÷
+ * 离线检测
  */
-extern uint8_t isRCOffline;
-extern uint8_t RCOfflineCheckCnt;
+extern bit isRCOffline;
+extern uint8_t xdata RCOfflineCheckCnt;
 
 #endif

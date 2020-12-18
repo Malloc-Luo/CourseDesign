@@ -1,5 +1,6 @@
 #include "module.h"
 #include "bluetooth.h"
+#include "LEDdisplay.h"
 
 #define RCOFFLINE  0x01 /*遥控离线*/
 #define WORKNORMAL 0x02 /*正常工作*/
@@ -8,6 +9,11 @@
  * P3.6接LED
  */
 sbit LED = P3 ^ 6; 
+
+/*
+ * 发送数据的地址
+ */
+int16_t * SendTempePtr;
 
 
 /**********************FUNCTION***********************
@@ -18,7 +24,7 @@ sbit LED = P3 ^ 6;
  *****************************************************/
 static void LED_state(uint8_t sta)
 {
-    static uint8_t cnt = 0;
+    static volatile uint8_t cnt = 0;
     switch (sta)
     {
         case RCOFFLINE:
@@ -44,11 +50,31 @@ static void LED_state(uint8_t sta)
     }
 }
 
-void Task_10Hz_1()
-{    
+void Task_5Hz()
+{
+    if (isResetRefVal || RecvMasterCmd == RESET)
+    {
+        isResetRefVal = 0;
+        RefTemperture = ModTemperture;
+        SendTempePtr = &RefTemperture;
+        MasterCmd = RESET;
+    }
+    else if (isSetValChanged)
+    {
+        isSetValChanged = 0;
+        MasterCmd = SET_VAL;
+        SendTempePtr = &SetTemperture;
+    }
+    else
+    {
+        MasterCmd = ACTUL_VAL;
+        SendTempePtr = &ModTemperture;
+    }
+    
+    bt_send_data(&MasterCmd, SendTempePtr);
 }
 
-void Task_10Hz_2()
+void Task_10Hz_1()
 {
     /* 离线检测计数, 超过1000ms认为离线 */
     if (RCOfflineCheckCnt++ > 10)
@@ -74,8 +100,4 @@ void Task_2Hz()
     }
     
     LED_state(state);
-}
-
-void Task_1Hz()
-{
 }
