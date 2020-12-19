@@ -38,7 +38,7 @@ extern bit isBelow;
 extern void display_reset(void);
 
 //展示最低参考值
-extern void display_reftemp(unsigned int reftemp);
+extern void display_reftemp(int16_t reftemp);
 
 //按键操作
 extern void key_set(void);

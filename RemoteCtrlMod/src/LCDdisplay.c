@@ -2,6 +2,7 @@
 #include "intrins.h"
 #include "LCDdisplay.h"
 
+
 /*
  * 注意！当按键有改变数字的时候或者发出重置命令的时候
  * 将这两个变量置1
@@ -10,8 +11,12 @@ bit isSetValChanged = 0;
 bit isResetRefVal = 0;
 bit isReset = 0;
 bit isShowRef = 0;
-
 bit isBelow = 0;
+
+bit isSetNegative=0;
+bit isActNegative=0;
+bit isRefNegative=0;
+
 
 sbit SCL = P2 ^ 0; //LCD
 sbit SDA = P2 ^ 1;
@@ -253,10 +258,40 @@ void setchar()
 //LCD显示 实际值、设定值
 void LCD_display(int16_t setval, int16_t actulval)
 {
-   
     uint8_t setval_100, setval_10, setval_1;
     uint8_t actulval_100, actulval_10, actulval_1;
-
+		
+	
+		if (setval < 0)
+		{
+			isSetNegative = 1;
+			setval = -setval;
+			DisplayOneChar(9, 1, '-');
+		}
+		else
+		{
+			if (isSetNegative == 1)
+			{
+				LCD_clear();
+				isSetNegative = 0;
+			}
+		}
+		
+		if (actulval < 0)
+		{
+			isActNegative = 1;
+			actulval = -actulval;
+			DisplayOneChar(0, 1, '-');
+		}
+		else
+		{
+			if (isActNegative == 1)
+			{
+				LCD_clear();
+				isActNegative = 0;
+			}
+		}
+		
     setchar();
     
     actulval_100 = actulval / 100;
@@ -266,8 +301,9 @@ void LCD_display(int16_t setval, int16_t actulval)
     setval_100 = setval / 100;
     setval_10 = (setval % 100) / 10;
     setval_1 = setval % 10;
+	
 
-    //Write_LCD(0,0,str_set);
+    
     Write_LCD(9, 0, str_set);
     Write_LCD(0, 0, str_actul);
     DisplayOneChar(5, 1, 0x00);
@@ -277,25 +313,17 @@ void LCD_display(int16_t setval, int16_t actulval)
     DisplayOneChar(7, 1, '|');
     setchar();
 
-    //Write_LCD(0,0,str_set);
-    Write_LCD(9, 0, str_set);
-    Write_LCD(0, 0, str_actul);
-   
-    DisplayOneChar(2, 1, '.');
-    DisplayOneChar(11, 1, '.');
-    DisplayOneChar(7, 0, '|');
-    DisplayOneChar(7, 1, '|');
 
-    DisplayOneChar(0, 1, actulval_100 + '0');
-    DisplayOneChar(1, 1, actulval_10 + '0');
-    DisplayOneChar(2, 1, '.');
-    DisplayOneChar(3, 1, actulval_1 + '0');
+    DisplayOneChar(1, 1, actulval_100 + '0');
+    DisplayOneChar(2, 1, actulval_10 + '0');
+    DisplayOneChar(3, 1, '.');
+    DisplayOneChar(4, 1, actulval_1 + '0');
     DisplayOneChar(5, 1, 0x00);
 
-    DisplayOneChar(9, 1, setval_100 + '0');
-    DisplayOneChar(10, 1, setval_10 + '0');
-    DisplayOneChar(11, 1, '.');
-    DisplayOneChar(12, 1, setval_1 + '0');
+    DisplayOneChar(10, 1, setval_100 + '0');
+    DisplayOneChar(11, 1, setval_10 + '0');
+    DisplayOneChar(12, 1, '.');
+    DisplayOneChar(13, 1, setval_1 + '0');
     DisplayOneChar(14, 1, 0x00);
 
 }
@@ -369,31 +397,47 @@ void display_reset()
 }
 
 //展示温度设定参考范围
-void display_reftemp(uint16_t reftemp)
+void display_reftemp(int16_t reftemp)
 {
-    uint8_t str_minreftemp[] = " MINTemp:";
-    uint8_t str_maxreftemp[] = " MAXTemp:";
+    uint8_t str_minreftemp[] = "MINTemp:";
+    uint8_t str_maxreftemp[] = "MAXTemp:";
     uint8_t reftemp_100,  reftemp_10, reftemp_1;
     setchar();
 
     Write_LCD(0, 0, str_minreftemp);
     Write_LCD(0, 1, str_maxreftemp);
-
+		
+		if (reftemp < 0)
+		{ 
+			reftemp = -reftemp;
+			isRefNegative = 1;
+			DisplayOneChar(10, 0, '-');
+		}
+		else
+		{
+			if(isRefNegative == 1)
+			{
+				LCD_clear();
+				isRefNegative = 0;
+			}
+		}
+			
+			
     reftemp_100 = reftemp / 100;
     reftemp_10 = (reftemp - 100 * reftemp_100) / 10;
     reftemp_1 = reftemp - 100 * reftemp_100 - 10 * reftemp_10;
 
-    DisplayOneChar(10, 0, reftemp_100 + '0');
-    DisplayOneChar(11, 0, reftemp_10 + '0');
-    DisplayOneChar(12, 0, '.');
-    DisplayOneChar(13, 0, reftemp_1 + '0');
-    DisplayOneChar(14, 0, 0x00);
+    DisplayOneChar(11, 0, reftemp_100 + '0');
+    DisplayOneChar(12, 0, reftemp_10 + '0');
+    DisplayOneChar(13, 0, '.');
+    DisplayOneChar(14, 0, reftemp_1 + '0');
+    DisplayOneChar(15, 0, 0x00);
 
-    DisplayOneChar(10, 1, '9');
     DisplayOneChar(11, 1, '9');
-    DisplayOneChar(12, 1, '.');
-    DisplayOneChar(13, 1, '9');
-    DisplayOneChar(14, 1, 0x00);
+    DisplayOneChar(12, 1, '9');
+    DisplayOneChar(13, 1, '.');
+    DisplayOneChar(14, 1, '9');
+    DisplayOneChar(15, 1, 0x00);
     delay1(1000);
 }
 

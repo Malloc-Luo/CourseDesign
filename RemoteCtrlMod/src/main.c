@@ -13,10 +13,10 @@
 /* 系统时钟计数，50ms */
 static volatile uint16_t data systick = 0;
 
-int16_t ModTemperture = 666;
-int16_t SetTemperture = 233;
-int16_t RefTemperture = 50;
-int8_t SlaveCmd = SET_VAL;
+int16_t ModTemperture = 200;
+int16_t SetTemperture = -123;
+int16_t RefTemperture = -200;
+uint8_t SlaveCmd = SET_VAL;
 
 sfr AUXR = 0x8e;
 
