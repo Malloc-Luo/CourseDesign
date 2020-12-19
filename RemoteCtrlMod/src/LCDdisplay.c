@@ -258,8 +258,8 @@ void setchar()
 //LCD显示 实际值、设定值
 void LCD_display(int16_t setval, int16_t actulval)
 {
-    uint8_t setval_100, setval_10, setval_1;
-    uint8_t actulval_100, actulval_10, actulval_1;
+    uint8_t setval_1000,setval_100, setval_10, setval_1;
+    uint8_t actulval_1000,actulval_100, actulval_10, actulval_1;
 		
 	
 		if (setval < 0)
@@ -293,38 +293,37 @@ void LCD_display(int16_t setval, int16_t actulval)
 		}
 		
     setchar();
-    
-    actulval_100 = actulval / 100;
+    actulval_1000 = actulval / 1000;
+    actulval_100 = (actulval % 1000) / 100;
     actulval_10 = (actulval % 100) / 10;
     actulval_1 = actulval % 10;
     
-    setval_100 = setval / 100;
+		setval_1000 = setval / 1000;
+    setval_100 = (setval % 1000) / 100;
     setval_10 = (setval % 100) / 10;
     setval_1 = setval % 10;
-	
 
-    
-    Write_LCD(9, 0, str_set);
-    Write_LCD(0, 0, str_actul);
-    DisplayOneChar(5, 1, 0x00);
-    DisplayOneChar(14, 1, 0x00); 
-    
-    DisplayOneChar(7, 0, '|');
-    DisplayOneChar(7, 1, '|');
+    Write_LCD(1, 0, str_actul);
+    Write_LCD(10, 0, str_set);
+   
+    DisplayOneChar(8, 0, '|');
+    DisplayOneChar(8, 1, '|');
     setchar();
 
 
-    DisplayOneChar(1, 1, actulval_100 + '0');
-    DisplayOneChar(2, 1, actulval_10 + '0');
-    DisplayOneChar(3, 1, '.');
-    DisplayOneChar(4, 1, actulval_1 + '0');
-    DisplayOneChar(5, 1, 0x00);
+    DisplayOneChar(1, 1, actulval_1000 + '0');
+    DisplayOneChar(2, 1, actulval_100 + '0');
+		DisplayOneChar(3, 1, actulval_10 + '0');
+    DisplayOneChar(4, 1, '.');
+    DisplayOneChar(5, 1, actulval_1 + '0');
+    DisplayOneChar(6, 1, 0x00);
 
-    DisplayOneChar(10, 1, setval_100 + '0');
-    DisplayOneChar(11, 1, setval_10 + '0');
-    DisplayOneChar(12, 1, '.');
-    DisplayOneChar(13, 1, setval_1 + '0');
-    DisplayOneChar(14, 1, 0x00);
+    DisplayOneChar(10, 1, setval_1000 + '0');
+    DisplayOneChar(11, 1, setval_100 + '0');
+		DisplayOneChar(12, 1, setval_10 + '0');
+    DisplayOneChar(13, 1, '.');
+    DisplayOneChar(14, 1, setval_1 + '0');
+    DisplayOneChar(15, 1, 0x00);
 
 }
 
@@ -366,9 +365,9 @@ void key_set()
 
 
     //设定温度超出参考范围时
-    if (SetTemperture > 999)
+    if (SetTemperture > 3000)
     {
-        SetTemperture = 999;
+        SetTemperture = 3000;
         isBelow = 1;
     }
 
@@ -422,10 +421,10 @@ void display_reftemp(int16_t reftemp)
 			}
 		}
 			
-			
     reftemp_100 = reftemp / 100;
-    reftemp_10 = (reftemp - 100 * reftemp_100) / 10;
-    reftemp_1 = reftemp - 100 * reftemp_100 - 10 * reftemp_10;
+    reftemp_10 = (reftemp % 100) / 10;
+    reftemp_1 = reftemp % 10;
+
 
     DisplayOneChar(11, 0, reftemp_100 + '0');
     DisplayOneChar(12, 0, reftemp_10 + '0');
@@ -433,10 +432,11 @@ void display_reftemp(int16_t reftemp)
     DisplayOneChar(14, 0, reftemp_1 + '0');
     DisplayOneChar(15, 0, 0x00);
 
-    DisplayOneChar(11, 1, '9');
-    DisplayOneChar(12, 1, '9');
+    DisplayOneChar(10, 1, '3');
+    DisplayOneChar(11, 1, '0');
+		DisplayOneChar(12, 1, '0');
     DisplayOneChar(13, 1, '.');
-    DisplayOneChar(14, 1, '9');
+    DisplayOneChar(14, 1, '0');
     DisplayOneChar(15, 1, 0x00);
     delay1(1000);
 }
