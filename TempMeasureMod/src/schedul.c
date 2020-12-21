@@ -1,9 +1,14 @@
 #include "module.h"
 #include "bluetooth.h"
 #include "LEDdisplay.h"
+#include "ADtemp.h"
 
 #define RCOFFLINE  0x01 /*遥控离线*/
 #define WORKNORMAL 0x02 /*正常工作*/
+
+bit taskFlag_10Hz = 0;
+bit taskFlag_5Hz = 0;
+bit taskFlag_2Hz = 0;
 
 /*
  * P3.6接LED
@@ -52,6 +57,10 @@ static void LED_state(uint8_t sta)
 
 void Task_5Hz()
 {
+    /*
+     * 如果是重置参考值或者接到党中央发来的指示：
+     * 则把参考值发回党中央，且标志位清零
+     */
     if (isResetRefVal || RecvMasterCmd == RESET)
     {
         isResetRefVal = 0;
@@ -59,6 +68,9 @@ void Task_5Hz()
         SendTempePtr = &RefTemperture;
         MasterCmd = RESET;
     }
+    /*
+     * 如果设定值发生改变，则向党中央同步设定值
+     */
     else if (isSetValChanged)
     {
         isSetValChanged = 0;
@@ -72,7 +84,7 @@ void Task_5Hz()
     }
     
     bt_send_data(&MasterCmd, SendTempePtr);
-    get_setval();
+    SetTemperture = get_setval();
 }
 
 void Task_10Hz_1()
@@ -82,6 +94,11 @@ void Task_10Hz_1()
     {
         isRCOffline = 1;
     }
+    
+    TempP = read_w(0x0e);
+    Temp1 = read_w(0x16);
+    
+    isUpdataVal = 1;
 }
 
 /*

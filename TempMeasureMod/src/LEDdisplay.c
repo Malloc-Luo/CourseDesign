@@ -62,7 +62,7 @@ int16_t get_setval(void)
 
     switch(k_s)
     {
-        case 0x1b:
+        case 0x00:
             isResetRefVal = 1;
             ST1 = SetTemperture;
             ST2 = SetTemperture;
@@ -73,7 +73,7 @@ int16_t get_setval(void)
         case 0x02:
             ST1 -= 1;
             break;
-        case 0x0b:
+        case 0x0b:  
             ST1 += 10;
             break;
         case 0x0a:
@@ -90,7 +90,11 @@ int16_t get_setval(void)
     }
 
     if (ST1 < 3000 && ST1 > RefTemperture)  //判断是否超范围
-        SetTemperture = ST1;
+        SetTemperture = ST1;  
+    else if (ST1 < RefTemperture)
+        SetTemperture = RefTemperture;
+    else 
+        SetTemperture = 3000;
 
     if (ST2 == SetTemperture)  //判断温度有没有变化
         isSetValChanged = 1;
@@ -102,7 +106,7 @@ int16_t get_setval(void)
 void LED_display(int16_t set_temp, int16_t measure_temp)
 {
     uint8_t m_t[4], s_t[4];
-    register i;
+    register uint8_t i;
     //判断正负
     m_t[3] = 12;
     s_t[3] = 12;
@@ -194,12 +198,12 @@ uint8_t get_key_state()
 void long_delay(void)
 {
     register uint8_t i;
-    for(i = 0; i < 0x28; i++);
+    for(i = 0; i < 0x30; i++);
 }
 
 
 void short_delay(void)
 {
     register uint8_t i;
-    for(i = 0; i < 6; i++);
+    for(i = 0; i < 8; i++);
 }

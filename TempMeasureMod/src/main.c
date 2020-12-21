@@ -15,6 +15,7 @@
 #include <math.h>
 #include "bluetooth.h"
 #include "LEDdisplay.h"
+#include "ADtemp.h"
 /* 系统时钟计数，20ms */
 static volatile uint16_t data systick = 0;
 
@@ -51,16 +52,42 @@ static void hardware_init()
     IE   = 0x90 | 0x83;
     TR1  = 1;
     
+    CS5550Init();
 }
 
 
 void main()
 {
+    static uint16_t waitcnt = 30000;
     /* 硬件初始化 */
     hardware_init();
+    /* 等待一段时间硬件稳定 */
+//    while (waitcnt--);
+//    SetTemperture = get_actulval();
     
     for (;;)
     {
+        if (isUpdataVal)
+        {
+            isUpdataVal = 0;
+            ModTemperture = get_actulval();
+            LED_display(123, 456);
+        }
+        if (taskFlag_10Hz)
+        {
+            Task_10Hz_1();
+            taskFlag_10Hz = 0;
+        }
+        if (taskFlag_5Hz)
+        {
+            Task_5Hz();
+            taskFlag_5Hz = 0;
+        }
+        if (taskFlag_2Hz)
+        {
+            Task_2Hz();
+            taskFlag_2Hz = 0;
+        }
         LED_display(SetTemperture, ModTemperture);
     }
 }
@@ -75,19 +102,22 @@ void system_scheduler()
     /* 100ms执行一次 */
     if (systick % 5 == 0)
     {
-        Task_10Hz_1();
+//        Task_10Hz_1();
+        taskFlag_10Hz = 1;
     }
     
     /* 200ms执行一次 */
     if (systick % 10 == 3)
     {
-        Task_5Hz();
+//        Task_5Hz();
+        taskFlag_5Hz = 1;
     }
     
     /* 500ms执行一次 */
     if (systick % 25 == 2)
     {
-        Task_2Hz();
+//        Task_2Hz();
+        taskFlag_2Hz = 1;
     }
 }
 

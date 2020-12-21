@@ -53,11 +53,17 @@ extern void Ctrl_Temperture(int16_t setval, int16_t actulval);
 extern void Task_10Hz_1();
 extern void Task_10Hz_2();
 
+extern bit taskFlag_10Hz;
+
 // 5Hz
 extern void Task_5Hz();
 
+extern bit taskFlag_5Hz;
+
 // 2Hz
 extern void Task_2Hz();
+
+extern bit taskFlag_2Hz;
 
 // 1Hz
 extern void Task_1Hz();
