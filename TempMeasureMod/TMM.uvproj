@@ -411,6 +411,11 @@
               <FileType>1</FileType>
               <FilePath>.\src\LEDdisplay.c</FilePath>
             </File>
+            <File>
+              <FileName>ctrltemp.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\src\ctrltemp.c</FilePath>
+            </File>
           </Files>
         </Group>
       </Groups>

@@ -43,7 +43,7 @@ extern uint8_t MasterCmd;
 /* 接收到的指令 */
 extern uint8_t RecvMasterCmd;
 
-extern void Ctrl_Temperture(uint16_t setval);
+extern void Ctrl_Temperture(int16_t setval, int16_t actulval);
 
 /*
  * 任务函数

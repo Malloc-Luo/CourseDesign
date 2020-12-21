@@ -9,5 +9,7 @@
 *.uvopt
 *.o
 *.zip
+*.SchDoc
+__Previews
 TMM
 RCM

@@ -12,7 +12,9 @@
  *
  *****************************************************/
 #include <reg51.h>
+#include <math.h>
 #include "bluetooth.h"
+#include "LEDdisplay.h"
 /* 系统时钟计数，20ms */
 static volatile uint16_t data systick = 0;
 
@@ -57,7 +59,10 @@ void main()
     /* 硬件初始化 */
     hardware_init();
     
-    for (;;);
+    for (;;)
+    {
+        LED_display(SetTemperture, ModTemperture);
+    }
 }
 
 /**********************FUNCTION***********************

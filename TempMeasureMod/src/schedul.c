@@ -72,6 +72,7 @@ void Task_5Hz()
     }
     
     bt_send_data(&MasterCmd, SendTempePtr);
+    get_setval();
 }
 
 void Task_10Hz_1()
