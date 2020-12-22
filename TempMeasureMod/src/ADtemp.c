@@ -194,7 +194,8 @@ int16_t get_actulval(void)
         Aout_1 = - 1.0 * Aout_1; 
     }
     
-    Tf = 8.7274f * Aout_1 - 306.6329f;
+    //Tf = 8.7274f * Aout_1 - 306.6329f;
+    Tf = 8.796f * Aout_1 - 308.836f;
     itemp = (int16_t)(Tf * 10.0f + 0.5f);
     
     return itemp;

@@ -40,7 +40,7 @@ static void parsing_instruction()
     uint8_t instruct = Buffer[1];
     int16_t temp =  *(int16_t *)(Buffer + 2);
     
-    if (instruct & 0xf0)
+    if ((instruct & 0xf0) == 0xf0)
     {
         ForceSynchronFlag = 1;
         instruct &= 0x0f;
@@ -85,7 +85,7 @@ void UART_Handler() interrupt 4 using 3
     {
         uint8_t buff = SBUF;
         /* 清除离线标志 */
-        isRCOffline = 0;
+        RCOfflineCheckCnt = 0;
         /*接收到了帧头*/
         if (buff == FRAME_HEADER)
         {

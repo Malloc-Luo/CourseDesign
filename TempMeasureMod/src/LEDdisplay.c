@@ -96,7 +96,7 @@ int16_t get_setval(void)
     else 
         SetTemperture = 3000;
 
-    if (ST2 == SetTemperture)  //判断温度有没有变化
+    if (ST2 != SetTemperture)  //判断温度有没有变化
         isSetValChanged = 1;
     
     return SetTemperture;

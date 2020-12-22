@@ -1,6 +1,6 @@
 ## 简单温控系统
 
-[github]([Malloc-Luo/CourseDesign: 大三上微机原理课程设计 (github.com)](https://github.com/Malloc-Luo/CourseDesign))
+[Malloc-Luo/CourseDesign: 大三上微机原理课程设计 (github.com)](https://github.com/Malloc-Luo/CourseDesign)
 
 ### 一，创新
 
@@ -38,4 +38,5 @@
 
 ### 五，材料
 
-[物品清单]([物品 (qq.com)](https://docs.qq.com/sheet/DU2lkakxWcFdqTlZT?tab=BB08J2))
+[物品清单](https://docs.qq.com/sheet/DU2lkakxWcFdqTlZT?tab=BB08J2)
+

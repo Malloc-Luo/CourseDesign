@@ -4,9 +4,9 @@
 
 static const uint8_t xdata FRAME_HEADER = 0xa5;
 static uint8_t Buffer[4] = { 0x00, 0x00, 0x00, 0x00 };
-bit isRCOffline = 0;
+bit isRCOffline = 1;
 bit LastTimeOfflineStatus = 0;
-uint16_t xdata RCOfflineCheckCnt = 0;
+uint16_t xdata RCOfflineCheckCnt = 11;
 uint8_t xdata RCConnectCnt = 0;
 
 static void uart_send(uint8_t byte)
@@ -73,7 +73,7 @@ void UART_Handler() interrupt 4 using 3
     {
         uint8_t buff = SBUF;
         /* 清除离线标志 */
-        isRCOffline = 0;
+        RCOfflineCheckCnt = 0;
         /*接收到了帧头*/
         if (buff == FRAME_HEADER)
         {

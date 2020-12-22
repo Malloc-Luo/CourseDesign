@@ -62,8 +62,10 @@ void main()
     /* 硬件初始化 */
     hardware_init();
     /* 等待一段时间硬件稳定 */
-//    while (waitcnt--);
-//    SetTemperture = get_actulval();
+    while (waitcnt--);
+    Task_10Hz_1();
+    SetTemperture = get_actulval();
+    RefTemperture = SetTemperture;
     
     for (;;)
     {
@@ -71,7 +73,7 @@ void main()
         {
             isUpdataVal = 0;
             ModTemperture = get_actulval();
-            LED_display(123, 456);
+            LED_display(SetTemperture, ModTemperture);
         }
         if (taskFlag_10Hz)
         {
@@ -88,7 +90,6 @@ void main()
             Task_2Hz();
             taskFlag_2Hz = 0;
         }
-        LED_display(SetTemperture, ModTemperture);
     }
 }
 
@@ -102,21 +103,18 @@ void system_scheduler()
     /* 100ms执行一次 */
     if (systick % 5 == 0)
     {
-//        Task_10Hz_1();
         taskFlag_10Hz = 1;
     }
     
     /* 200ms执行一次 */
     if (systick % 10 == 3)
     {
-//        Task_5Hz();
         taskFlag_5Hz = 1;
     }
     
     /* 500ms执行一次 */
     if (systick % 25 == 2)
     {
-//        Task_2Hz();
         taskFlag_2Hz = 1;
     }
 }

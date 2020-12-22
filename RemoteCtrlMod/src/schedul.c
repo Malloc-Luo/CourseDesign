@@ -63,7 +63,7 @@ void Task_5Hz()
     /*
      * 强制同步模式下按键不可操作
      */
-    if (ForceSynchronFlag)
+    if (!ForceSynchronFlag)
     {
         key_set(); //遥控器按键操作
         

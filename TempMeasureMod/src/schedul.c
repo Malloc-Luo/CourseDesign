@@ -96,20 +96,21 @@ void Task_5Hz()
          */
         if (RCConnectCnt >= 8)
         {
-            MasterCmd = ACTUL_VAL | 0xf0;
+            MasterCmd = ACTUL_VAL;
             SendTempePtr = &ModTemperture;
         }
         else if (RCConnectCnt >= 4)
         {
-            MasterCmd = RESET | 0xf0;
+            MasterCmd = RESET;
             SendTempePtr = &RefTemperture;
         }
         else
         {
-            MasterCmd = SET_VAL | 0xf0;
+            MasterCmd = SET_VAL;
             SendTempePtr = &SetTemperture;
         }
         
+        MasterCmd |= 0xf0;
         RCConnectCnt--;
     }
     
