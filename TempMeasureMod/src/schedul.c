@@ -20,7 +20,6 @@ sbit LED = P3 ^ 6;
  */
 int16_t * SendTempePtr;
 
-
 /**********************FUNCTION***********************
  * @brief: 下位机状态显示
  * @param: sta: 下位机状态，RCOFFLINE WORKNORMAL
@@ -55,44 +54,88 @@ static void LED_state(uint8_t sta)
     }
 }
 
+/*
+ * 执行频率5Hz
+ * 主要用于蓝牙串口发送指令，及按键获取
+ */
 void Task_5Hz()
 {
-    /*
-     * 如果是重置参考值或者接到党中央发来的指示：
-     * 则把参考值发回党中央，且标志位清零
-     */
-    if (isResetRefVal || RecvMasterCmd == RESET)
+    if (!RCConnectCnt)
     {
-        isResetRefVal = 0;
-        RefTemperture = ModTemperture;
-        SendTempePtr = &RefTemperture;
-        MasterCmd = RESET;
-    }
-    /*
-     * 如果设定值发生改变，则向党中央同步设定值
-     */
-    else if (isSetValChanged)
-    {
-        isSetValChanged = 0;
-        MasterCmd = SET_VAL;
-        SendTempePtr = &SetTemperture;
+        SetTemperture = get_setval();
+        /*
+         * 如果是重置参考值或者接到党中央发来的指示：
+         * 则把参考值发回党中央，且标志位清零
+         */
+        if (isResetRefVal || RecvMasterCmd == RESET)
+        {
+            isResetRefVal = 0;
+            RefTemperture = ModTemperture;
+            SendTempePtr = &RefTemperture;
+            MasterCmd = RESET;
+        }
+        /*
+         * 如果设定值发生改变，则向党中央同步设定值
+         */
+        else if (isSetValChanged)
+        {
+            isSetValChanged = 0;
+            MasterCmd = SET_VAL;
+            SendTempePtr = &SetTemperture;
+        }
+        else
+        {
+            MasterCmd = ACTUL_VAL;
+            SendTempePtr = &ModTemperture;
+        }
     }
     else
     {
-        MasterCmd = ACTUL_VAL;
-        SendTempePtr = &ModTemperture;
+        /*
+         * 连接初始状态强制同步，顺序不能改变
+         */
+        if (RCConnectCnt >= 8)
+        {
+            MasterCmd = ACTUL_VAL | 0xf0;
+            SendTempePtr = &ModTemperture;
+        }
+        else if (RCConnectCnt >= 4)
+        {
+            MasterCmd = RESET | 0xf0;
+            SendTempePtr = &RefTemperture;
+        }
+        else
+        {
+            MasterCmd = SET_VAL | 0xf0;
+            SendTempePtr = &SetTemperture;
+        }
+        
+        RCConnectCnt--;
     }
     
     bt_send_data(&MasterCmd, SendTempePtr);
-    SetTemperture = get_setval();
 }
+
 
 void Task_10Hz_1()
 {
+    /* 记录上一次的离线状态 */
+    LastTimeOfflineStatus = isRCOffline;
+    
     /* 离线检测计数, 超过1000ms认为离线 */
     if (RCOfflineCheckCnt++ > 10)
     {
         isRCOffline = 1;
+    }
+    else
+    {
+        isRCOffline = 0;
+    }
+    
+    /* 从离线状态切换到在线状态 */
+    if (LastTimeOfflineStatus && !isRCOffline)
+    {
+        RCConnectCnt = MAX_CNT;
     }
     
     TempP = read_w(0x0e);

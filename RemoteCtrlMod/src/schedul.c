@@ -60,15 +60,22 @@ void Task_10Hz_1()
 
 void Task_5Hz()
 {
-    key_set(); //遥控器按键操作
-    if (isResetRefVal == 1)
+    /*
+     * 强制同步模式下按键不可操作
+     */
+    if (ForceSynchronFlag)
     {
-        SlaveCmd = RESET;
-        isResetRefVal = 0;
-    }
-    else
-    {
-        SlaveCmd = SET_VAL;
+        key_set(); //遥控器按键操作
+        
+        if (isResetRefVal == 1)
+        {
+            SlaveCmd = RESET;
+            isResetRefVal = 0;
+        }
+        else
+        {
+            SlaveCmd = SET_VAL;
+        }
     }
     
     bt_send_data(&SlaveCmd, &SetTemperture);	

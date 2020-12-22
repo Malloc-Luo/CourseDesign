@@ -5,7 +5,9 @@
 static const uint8_t xdata FRAME_HEADER = 0xa5;
 static uint8_t Buffer[4] = { 0x00, 0x00, 0x00, 0x00 };
 bit isRCOffline = 0;
-uint8_t xdata RCOfflineCheckCnt = 0;
+bit LastTimeOfflineStatus = 0;
+uint16_t xdata RCOfflineCheckCnt = 0;
+uint8_t xdata RCConnectCnt = 0;
 
 static void uart_send(uint8_t byte)
 {
@@ -36,23 +38,27 @@ static void parsing_instruction()
     int16_t temp = *(int16_t *)(Buffer + 2);
     RecvMasterCmd = Buffer[1];
     
-    switch (RecvMasterCmd)
+    /* 这个时候在强制同步，不应该修改接收数据 */
+    if (!RCConnectCnt)
     {
-        /* 修改设定值 */
-        case SET_VAL:
+        switch (RecvMasterCmd)
         {
-            SetTemperture = temp;
-            break;
+            /* 修改设定值 */
+            case SET_VAL:
+            {
+                SetTemperture = temp;
+                break;
+            }
+            /* 重置温度参考值*/
+            case RESET:
+            {
+                RefTemperture = ModTemperture;
+                break;
+            }
+            case ACTUL_VAL:
+            default:
+                break;
         }
-        /* 重置温度参考值*/
-        case RESET:
-        {
-            RefTemperture = ModTemperture;
-            break;
-        }
-        case ACTUL_VAL:
-        default:
-            break;
     }
 }
 

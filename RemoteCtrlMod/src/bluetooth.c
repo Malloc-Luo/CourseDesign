@@ -5,6 +5,7 @@
 static const uint8_t xdata FRAME_HEADER = 0xa5;
 static uint8_t data Buffer[4] = { 0x00, 0x00, 0x00, 0x00 };
 bit isRCOffline = 0;
+bit ForceSynchronFlag = 0;
 uint8_t RCOfflineCheckCnt = 0;
 
 static void uart_send(uint8_t byte)
@@ -38,6 +39,16 @@ static void parsing_instruction()
 {
     uint8_t instruct = Buffer[1];
     int16_t temp =  *(int16_t *)(Buffer + 2);
+    
+    if (instruct & 0xf0)
+    {
+        ForceSynchronFlag = 1;
+        instruct &= 0x0f;
+    }
+    else
+    {
+        ForceSynchronFlag = 0;
+    }
     
     switch (instruct)
     {
