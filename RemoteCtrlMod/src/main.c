@@ -18,6 +18,10 @@ int16_t SetTemperture = 0;
 int16_t RefTemperture = 0;
 uint8_t SlaveCmd = SET_VAL;
 
+bit taskFlag10Hz = 0;
+bit taskFlag5Hz  = 0;
+bit taskFlag2Hz  = 0;
+
 sfr AUXR = 0x8e;
 
 /* 硬件初始化放在这里面 */
@@ -45,7 +49,7 @@ static void hardware_init()
     IE   = 0x90 | 0x83;
     TR1  = 1;
     
-		Init_Lcd();
+    Init_Lcd();
 }
 
 
@@ -56,22 +60,43 @@ void main()
 	
     for (;;)
     {
-				
-				signal_display();
-			
-        if(isReset) //如果按下重置参考值键，展示重置成功
-				{
-          display_reset();
-					isReset = 0;
-				}
-        else
-            LCD_display(SetTemperture, ModTemperture);
+        signal_display();
         
-        if(isShowRef | isBelow)//按下展示参考范围键（S2）或者当设定温度超出设定范围时，展示设定温度范围
+        /* 如果按下重置参考值键，展示重置成功 */
+        if (isReset) 
+        {
+            display_reset();
+            isReset = 0;
+        }
+        else
+        {
+            LCD_display(SetTemperture, ModTemperture);
+        }
+        
+        /* 按下展示参考范围键（S2）或者当设定温度超出设定范围时，展示设定温度范围 */
+        if (isShowRef | isBelow)
         {  
             display_reftemp(RefTemperture);
             isShowRef = 0;
             isBelow = 0;
+        }
+        
+        if (taskFlag10Hz)
+        {
+            Task_10Hz_1();
+            taskFlag10Hz = 0;
+        }
+        
+        if (taskFlag5Hz)
+        {
+            Task_5Hz();
+            taskFlag5Hz = 0;
+        }
+        
+        if (taskFlag2Hz)
+        {
+            Task_2Hz();
+            taskFlag2Hz = 0;
         }
     }
 }
@@ -86,20 +111,21 @@ static void system_scheduler()
     /* 100ms执行一次 */
     if (systick % 5 == 0)
     {
-        Task_10Hz_1();
+        taskFlag10Hz = 1;
     }
     
     if (systick % 10 == 1)
     {
-        Task_5Hz();
+        taskFlag5Hz = 1;
     }
     
     /* 500ms执行一次 */
     if (systick % 25 == 2)
     {
-        Task_2Hz();
+        taskFlag2Hz = 1;
     }
 }
+
 
 void timer0() interrupt 1 using 1
 {

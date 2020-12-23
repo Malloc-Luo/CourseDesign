@@ -41,13 +41,14 @@ extern uint8_t SlaveCmd;
 /*
  * 任务函数
  */
+extern bit taskFlag10Hz;
+extern bit taskFlag5Hz;
+extern bit taskFlag2Hz;
 
-// 10Hz
+
 extern void Task_10Hz_1();
 extern void Task_10Hz_2();
-
 extern void Task_5Hz();
-// 2Hz
 extern void Task_2Hz();
 
 #endif
