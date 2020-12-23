@@ -2,7 +2,6 @@
 #include "intrins.h"
 #include "LCDdisplay.h"
 
-
 /*
  * 注意！当按键有改变数字的时候或者发出重置命令的时候
  * 将这两个变量置1
@@ -32,7 +31,8 @@ sbit S8 = P1 ^ 7;
 
 char ADDR = 0x4E;    // PCF8574  T  模块的地址码
 
-uint8_t degree_centi[] = {0x16, 0x09, 0x08, 0x08, 0x08, 0x09, 0x06, 0x00}; //自定义字符
+uint8_t degree_centi[] = {0x16, 0x09, 0x08, 0x08, 0x08, 0x09, 0x06, 0x00}; //自定义字符（℃）
+uint8_t signal[] = {0x01, 0x01, 0x05, 0x05, 0x15, 0x15, 0x15, 0x15, 0x00};//信号图
 
 uint8_t code str_set[] = "Preset";
 uint8_t code str_actul[] = "Actual";
@@ -390,9 +390,13 @@ void display_reset()
 {
     uint8_t str_reset0[] = "Reset";
     uint8_t str_reset1[] = "Successfully";
-    Write_LCD(5, 0, str_reset0);
-    Write_LCD(2, 1, str_reset1);
-    delay1(1000);
+	
+		
+      LCD_clear();//清屏
+      Write_LCD(5, 0, str_reset0);
+			Write_LCD(2, 1, str_reset1);
+			delay1(1000);
+      LCD_clear();
 }
 
 //展示温度设定参考范围
@@ -403,6 +407,7 @@ void display_reftemp(int16_t reftemp)
     uint8_t reftemp_100,  reftemp_10, reftemp_1;
     setchar();
 
+		LCD_clear();
     Write_LCD(0, 0, str_minreftemp);
     Write_LCD(0, 1, str_maxreftemp);
 		
@@ -439,8 +444,34 @@ void display_reftemp(int16_t reftemp)
     DisplayOneChar(14, 1, '0');
     DisplayOneChar(15, 1, 0x00);
     delay1(1000);
+		LCD_clear();
 }
 
+void signal_display()
+{
+	static bit a=0;
+	setchar();
+	
+	if (isRCOffline == 0)
+	{
+		
+		if (a)
+		{
+		LCD_clear();
+		a = 0;
+		}
+		DisplayOneChar(0, 0, 0x01);
+	}
+	else 
+	{
+		if (a ==0)
+		{
+		LCD_clear();
+		a = 1;
+		}
+		DisplayOneChar(0, 0, '!');
+  }
+}
 //清屏
 void LCD_clear()
 {
