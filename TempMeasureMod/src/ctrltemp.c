@@ -13,7 +13,7 @@ void Ctrl_Temperture(int16_t setval, int16_t actulval)
     /*
      * 误差小于 1°C 时关闭设备
      */
-    if (abs(error) < 100)
+    if (abs(error) < 20)
     {
         ctrl_device(CLOSE);
     }

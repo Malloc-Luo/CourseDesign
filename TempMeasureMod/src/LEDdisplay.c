@@ -9,7 +9,7 @@ bit isResetRefVal = 0;
 
 sbit DAT = P1 ^ 4;
 sbit KEY = P1 ^ 5;
-sbit CS = P1 ^ 6;
+sbit CS  = P1 ^ 6;
 sbit CLK = P1 ^ 7;
 
 /*     
@@ -88,16 +88,25 @@ int16_t get_setval(void)
         default:
             break;
     }
-
-    if (ST1 < 3000 && ST1 > RefTemperture)  //判断是否超范围
-        SetTemperture = ST1;  
-    else if (ST1 < RefTemperture)
-        SetTemperture = RefTemperture;
-    else 
+    
+    if (ST1 > 3000)
+    {
         SetTemperture = 3000;
+    }
+    else if (ST1 < RefTemperture)
+    {
+        SetTemperture = RefTemperture;
+    }
+    else
+    {
+        SetTemperture = ST1; 
+    }
 
-    if (ST2 != SetTemperture)  //判断温度有没有变化
+    /* 判断温度有没有变化 */
+    if (ST2 != SetTemperture)
+    {
         isSetValChanged = 1;
+    }
     
     return SetTemperture;
 }
@@ -107,6 +116,8 @@ void LED_display(int16_t set_temp, int16_t measure_temp)
 {
     uint8_t m_t[4], s_t[4];
     register uint8_t i;
+    
+    send_byte(0xa4);
     //判断正负
     m_t[3] = 12;
     s_t[3] = 12;

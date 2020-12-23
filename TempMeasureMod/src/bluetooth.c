@@ -1,8 +1,11 @@
 #include <reg51.h>
 #include "module.h"
 #include "bluetooth.h"
+#include "LEDdisplay.h"
 
-static const uint8_t xdata FRAME_HEADER = 0xa5;
+/* 帧头 */
+#define FRAME_HEADER 0xa5
+
 static uint8_t Buffer[4] = { 0x00, 0x00, 0x00, 0x00 };
 bit isRCOffline = 1;
 bit LastTimeOfflineStatus = 0;
@@ -38,21 +41,28 @@ static void parsing_instruction()
     int16_t temp = *(int16_t *)(Buffer + 2);
     RecvMasterCmd = Buffer[1];
     
-    /* 这个时候在强制同步，不应该修改接收数据 */
-    if (!RCConnectCnt)
+    /* 
+     * 这个时候在强制同步，不应该修改接收数据 
+     * 或者离线的时候，也不应该修改接收数据
+     */
+    if (!RCConnectCnt && !isRCOffline)
     {
         switch (RecvMasterCmd)
         {
-            /* 修改设定值 */
+            /* 修改设定值，如果设定值没有主动改变 */
             case SET_VAL:
             {
-                SetTemperture = temp;
+                if (!isSetValChanged)
+                {
+                    SetTemperture = temp;
+                }
                 break;
             }
             /* 重置温度参考值*/
             case RESET:
             {
                 RefTemperture = ModTemperture;
+                isResetRefVal = 1;
                 break;
             }
             case ACTUL_VAL:
@@ -69,7 +79,7 @@ static volatile uint8_t recvCnt = 0;
 
 void UART_Handler() interrupt 4 using 3
 {
-    if (RI == 1)
+    if (RI)
     {
         uint8_t buff = SBUF;
         /* 清除离线标志 */
@@ -80,7 +90,7 @@ void UART_Handler() interrupt 4 using 3
             isReadyRecv = 1;
         }
         
-        if (isReadyRecv == 1)
+        if (isReadyRecv)
         {
             Buffer[recvCnt++] = buff;
             

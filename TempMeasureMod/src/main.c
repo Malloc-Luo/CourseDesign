@@ -5,7 +5,7 @@
  * @brief:    
  * 资源分配：
  * T1 ---> UART
- * P1.0, P1.1, P1.2, P1.3 制冷制热设备控制
+ * P2.0, P2.1 制冷制热设备控制
  * P1.4, P1.5, P1.6, P1.7 数码管显示及键盘设置
  * P2, P0.4, P0.5 AD转换获取温度
  * P3.6接LED，若程序运行正常，则LED每隔1000ms闪烁一次
@@ -20,10 +20,11 @@
 static volatile uint16_t data systick = 0;
 
 int16_t ModTemperture = 0;
-int16_t SetTemperture = 0;
-int16_t RefTemperture = 0;
+int16_t SetTemperture = 20;
+int16_t RefTemperture = 20;
 uint8_t MasterCmd = ACTUL_VAL;
 uint8_t RecvMasterCmd = SET_VAL;
+bit initFlag = 1;
 
 sfr AUXR = 0x8e;
 
@@ -58,14 +59,8 @@ static void hardware_init()
 
 void main()
 {
-    static uint16_t waitcnt = 30000;
     /* 硬件初始化 */
     hardware_init();
-    /* 等待一段时间硬件稳定 */
-    while (waitcnt--);
-    Task_10Hz_1();
-    SetTemperture = get_actulval();
-    RefTemperture = SetTemperture;
     
     for (;;)
     {
@@ -104,6 +99,12 @@ void system_scheduler()
     if (systick % 5 == 0)
     {
         taskFlag_10Hz = 1;
+    }
+    
+    if (systick % 5 == 1)
+    {
+        /* 100ms更新一次温度值 */
+        isUpdataVal = 1;
     }
     
     /* 200ms执行一次 */

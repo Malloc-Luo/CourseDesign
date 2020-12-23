@@ -23,36 +23,34 @@ sbit     CS_CS5550  =  P1 ^ 0;
 sbit     MOSI       =  P1 ^ 1;
 sbit     MISO       =  P1 ^ 2;
 sbit     CLK        =  P1 ^ 3;
-/* 数据选择器 */
-sbit     BB         =  P3 ^ 2;
-sbit     AA         =  P3 ^ 3;
+
 
 /*
  * state = 1制热
  * state = 0降温
- * 风扇控制端：P1.0, P1.1
- * 加热控制端：P1.2, P1.3
+ * 风扇控制端：P2.0
+ * 加热控制端：P2.1
  */
+sbit ColdCtrl = P2 ^ 0;
+sbit HeatCtrl = P2 ^ 1;
+
 void ctrl_device(uint8_t state)
 {
-    if (state == 1)
+    switch (state)
     {
-        /* 关闭风扇 */
-        P1 &= 0xfc;
-        /* 开启制热 */
-        P1 |= 0x0c;
-    }
-    else if (state == 0)
-    {
-        /* 关闭制热 */
-        P1 &= 0xf3;
-        /* 开启风扇 */
-        P1 |= 0x03;
-    }
-    else
-    {
-        /* 全部关掉！*/
-        P1 &= 0xf0;
+        case COLD:
+            ColdCtrl = 0;
+            HeatCtrl = 1;
+            break;
+        case HEAT:
+            ColdCtrl = 1;
+            HeatCtrl = 0;
+            break;
+        case CLOSE:
+        default:
+            ColdCtrl = 1;
+            HeatCtrl = 1;
+            break;
     }
 }
 
@@ -173,8 +171,6 @@ void CS5550Init()
     EA = 1;
     wRIte_w(0x40, 0x000011);
     delay(1);
-    BB = 0;
-    AA = 0;
     wRIte_w(0xe8, 0xffffff);
 }
 
@@ -195,7 +191,8 @@ int16_t get_actulval(void)
     }
     
     //Tf = 8.7274f * Aout_1 - 306.6329f;
-    Tf = 8.796f * Aout_1 - 308.836f;
+    //Tf = 8.796f * Aout_1 - 308.836f;
+    Tf = 8.4583f * Aout_1 - 296.193;
     itemp = (int16_t)(Tf * 10.0f + 0.5f);
     
     return itemp;

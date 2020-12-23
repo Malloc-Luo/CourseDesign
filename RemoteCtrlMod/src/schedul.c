@@ -51,6 +51,10 @@ void Task_10Hz_1()
     if (RCOfflineCheckCnt++ > 10)
     {
         isRCOffline = 1;
+        /* 离线状态全显示0 */
+        ModTemperture = 0;
+        SetTemperture = 0;
+        RefTemperture = 0;
     }
     else
     {
@@ -65,9 +69,10 @@ void Task_5Hz()
      */
     if (!ForceSynchronFlag)
     {
-        key_set(); //遥控器按键操作
+        /* 遥控器按键操作 */
+        key_set(); 
         
-        if (isResetRefVal == 1)
+        if (isResetRefVal)
         {
             SlaveCmd = RESET;
             isResetRefVal = 0;

@@ -62,12 +62,12 @@ void Task_5Hz()
 {
     if (!RCConnectCnt)
     {
-        SetTemperture = get_setval();
+        get_setval();
         /*
          * 如果是重置参考值或者接到党中央发来的指示：
          * 则把参考值发回党中央，且标志位清零
          */
-        if (isResetRefVal || RecvMasterCmd == RESET)
+        if (isResetRefVal)
         {
             isResetRefVal = 0;
             RefTemperture = ModTemperture;
@@ -141,8 +141,6 @@ void Task_10Hz_1()
     
     TempP = read_w(0x0e);
     Temp1 = read_w(0x16);
-    
-    isUpdataVal = 1;
 }
 
 /*
@@ -162,4 +160,5 @@ void Task_2Hz()
     }
     
     LED_state(state);
+    Ctrl_Temperture(SetTemperture, ModTemperture);
 }
