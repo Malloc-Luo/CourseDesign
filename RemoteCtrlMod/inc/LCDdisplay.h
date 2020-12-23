@@ -33,6 +33,8 @@ extern bit isShowRef;
 
 //判断是否超出设定范围
 extern bit isBelow;
+//判断蓝牙连接是否成功
+extern bit isRCOffline;
 
 //显示重置成功
 extern void display_reset(void);
@@ -43,6 +45,8 @@ extern void display_reftemp(int16_t reftemp);
 //按键操作
 extern void key_set(void);
 
+//显示蓝牙连接状况
+extern void signal_display(void);
 //LCD清屏
 extern void LCD_clear(void);
 
