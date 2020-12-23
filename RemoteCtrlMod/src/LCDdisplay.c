@@ -32,7 +32,7 @@ sbit S8 = P1 ^ 7;
 char ADDR = 0x4E;    // PCF8574  T  模块的地址码
 
 uint8_t degree_centi[] = {0x16, 0x09, 0x08, 0x08, 0x08, 0x09, 0x06, 0x00}; //自定义字符（℃）
-uint8_t signal[] = {0x01, 0x01, 0x05, 0x05, 0x15, 0x15, 0x15, 0x15, 0x00};//信号图
+uint8_t signal[] = {0x01, 0x01, 0x05, 0x05, 0x15, 0x15, 0x15, 0x00};//信号图
 
 uint8_t code str_set[] = "Preset";
 uint8_t code str_actul[] = "Actual";
@@ -244,13 +244,19 @@ void DisplayOneChar(uint8_t X, uint8_t Y, uint8_t DData)
 
 void setchar()
 {
-    uint8_t i;
-    LCD_write_command(0x40); // //设置第一个字的起始地址
-
+    uint8_t i,j;
+    LCD_write_command(0x40); // 设置第一个字的起始地址
     for(i = 0; i < 8; i++)
     {
         LCD_write_data(degree_centi[i]);
     }
+		
+		LCD_write_command(0x48);//设置第二个字的起始地址
+		for(j = 0; j < 8; j++)
+    {
+        LCD_write_data(signal[j]);
+    }
+		
 }
 
 
@@ -454,7 +460,6 @@ void signal_display()
 	
 	if (isRCOffline == 0)
 	{
-		
 		if (a)
 		{
 		LCD_clear();
@@ -464,7 +469,7 @@ void signal_display()
 	}
 	else 
 	{
-		if (a ==0)
+		if (a == 0)
 		{
 		LCD_clear();
 		a = 1;

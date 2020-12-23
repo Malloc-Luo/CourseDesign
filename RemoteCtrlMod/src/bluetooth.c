@@ -4,9 +4,9 @@
 
 static const uint8_t xdata FRAME_HEADER = 0xa5;
 static uint8_t data Buffer[4] = { 0x00, 0x00, 0x00, 0x00 };
-bit isRCOffline = 0;
+bit isRCOffline = 1;
 bit ForceSynchronFlag = 0;
-uint8_t RCOfflineCheckCnt = 0;
+uint8_t RCOfflineCheckCnt = 21;
 
 static void uart_send(uint8_t byte)
 {
