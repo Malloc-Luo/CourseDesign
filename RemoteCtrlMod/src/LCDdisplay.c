@@ -48,7 +48,7 @@ void delay1(int y)   //
 
         for(c = 1; c > 0; c--)
         {
-            for(b = 15; b > 0; b--)
+            for(b = 70; b > 0; b--)
             {
                 for(a = 2; a > 0; a--);
             }
@@ -132,14 +132,14 @@ void LCD_write_command(char comm)
     tmp = comm & 0xF0;    // 与0xf0 应该是取第四位的意思吧
     tmp |= 0x0C;         //保留高4位为指令的高四位，低四位为   RS = 0, RW = 0, EN = 1
     IIC_writeByte(tmp);  //从串口送出
-    delay1(2);
+    delay1(5);
     tmp &= 0xFB;        //Make EN = 0
     IIC_writeByte(tmp);
 
     tmp = (comm & 0x0F) << 4 ;  //将指令的低四位 送到高位置保存
     tmp |= 0x0C;        //RS = 0, RW = 0, EN = 1
     IIC_writeByte(tmp);
-    delay1(2);
+    delay1(5);
     tmp &= 0xFB; // Make EN = 0
     IIC_writeByte(tmp);
 
@@ -156,14 +156,14 @@ void LCD_write_data(char data1)
     tmp = data1 & 0xF0;
     tmp |= 0x0D; //RS = 0, RW = 0, EN = 1
     IIC_writeByte(tmp);
-    delay1(2);
+    delay1(5);
     tmp &= 0xFB; //Make EN = 0
     IIC_writeByte(tmp);
 
     tmp = (data1 & 0x0F) << 4 ;
     tmp |= 0x0D; //RS = 0, RW = 0, EN = 1
     IIC_writeByte(tmp);
-    delay1(2);
+    delay1(5);
     tmp &= 0xFB ; // Make EN = 0
     IIC_writeByte(tmp);
 }

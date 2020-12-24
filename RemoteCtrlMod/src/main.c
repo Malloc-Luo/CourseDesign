@@ -2,7 +2,7 @@
  * @filename: main.c
  * @author:   yuqi li
  * @data:     2020.12.11
- * @brief:    
+ * @brief:
  * 资源分配：
  * T1 ---> UART
  *
@@ -30,10 +30,10 @@ static void hardware_init()
     TMOD = 0x01;
     TH0  = 0xb1;
     TL0  = 0xe0;
-    TCON = 0x11; 
+    TCON = 0x11;
     IE   = 0x83;
     IP   = 0x01;
-    
+
     /*
      * 串口初始化，波特率9600，1停止位，偶校验
      */
@@ -44,8 +44,8 @@ static void hardware_init()
     TL1  = 0xfd;
     IE   = 0x90 | 0x83;
     TR1  = 1;
-    
-		Init_Lcd();
+
+    Init_Lcd();
 }
 
 
@@ -53,22 +53,21 @@ void main()
 {
     /* 硬件初始化 */
     hardware_init();
-	
+
     for (;;)
     {
-				
-				signal_display();
-			
+        signal_display();
+
         if(isReset) //如果按下重置参考值键，展示重置成功
-				{
-          display_reset();
-					isReset = 0;
-				}
+        {
+            display_reset();
+            isReset = 0;
+        }
         else
             LCD_display(SetTemperture, ModTemperture);
-        
+
         if(isShowRef | isBelow)//按下展示参考范围键（S2）或者当设定温度超出设定范围时，展示设定温度范围
-        {  
+        {
             display_reftemp(RefTemperture);
             isShowRef = 0;
             isBelow = 0;
@@ -88,12 +87,12 @@ static void system_scheduler()
     {
         Task_10Hz_1();
     }
-    
+
     if (systick % 10 == 1)
     {
         Task_5Hz();
     }
-    
+
     /* 500ms执行一次 */
     if (systick % 25 == 2)
     {
@@ -105,7 +104,7 @@ void timer0() interrupt 1 using 1
 {
     TH0  = 0xb1;
     TL0  = 0xe0;
-    
+
     systick++;
     /*系统调度*/
     system_scheduler();
