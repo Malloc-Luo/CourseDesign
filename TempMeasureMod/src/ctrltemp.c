@@ -3,7 +3,7 @@
 #include "ADtemp.h"
 
 /*
- * Éè¶¨ÖµÓëÊµ¼ÊÖµµÄÎó²î
+ * è®¾å®šå€¼ä¸å®é™…å€¼çš„è¯¯å·®
  */
 static int16_t xdata error = 0;
 
@@ -11,7 +11,7 @@ void Ctrl_Temperture(int16_t setval, int16_t actulval)
 {
     error = setval - actulval;
     /*
-     * Îó²îĞ¡ÓÚ 1¡ãC Ê±¹Ø±ÕÉè±¸
+     * è¯¯å·®å°äº 1Â°C æ—¶å…³é—­è®¾å¤‡
      */
     if (abs(error) < 20)
     {

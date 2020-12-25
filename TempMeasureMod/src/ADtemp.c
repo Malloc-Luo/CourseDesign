@@ -3,14 +3,14 @@
 #include <intRIns.h>
 
 /*
- * ¶Áµ½µÄÕæÊµ¸¡µãĞÍÎÂ¶ÈÖµ
+ * è¯»åˆ°çš„çœŸå®æµ®ç‚¹å‹æ¸©åº¦å€¼
  */
 static float Tf = 0.0f;
-/* ²âÁ¿¶Ë */
+/* æµ‹é‡ç«¯ */
 static float Aout_1 = 0.0f;
-/* Àä¶Ë */
+/* å†·ç«¯ */
 static float Aout_2 = 0.0f;
-/* ²»ÒªÎÊ£¬ÎÒÒ²²»ÖªµÀÕâÊÇÊ²Ã´ */
+/* ä¸è¦é—®ï¼Œæˆ‘ä¹Ÿä¸çŸ¥é“è¿™æ˜¯ä»€ä¹ˆ */
 int32_t Temp1 = 0;
 int32_t Temp2 = 0;
 int32_t TempP = 0;
@@ -18,7 +18,7 @@ bit isUpdataVal = 0;
 
 sfr CLK_DIV = 0x97;
 
-/* CS5550 ½Ó¿Ú */
+/* CS5550 æ¥å£ */
 sbit     CS_CS5550  =  P1 ^ 0;
 sbit     MOSI       =  P1 ^ 1;
 sbit     MISO       =  P1 ^ 2;
@@ -26,10 +26,10 @@ sbit     CLK        =  P1 ^ 3;
 
 
 /*
- * state = 1ÖÆÈÈ
- * state = 0½µÎÂ
- * ·çÉÈ¿ØÖÆ¶Ë£ºP2.0
- * ¼ÓÈÈ¿ØÖÆ¶Ë£ºP2.1
+ * state = 1åˆ¶çƒ­
+ * state = 0é™æ¸©
+ * é£æ‰‡æ§åˆ¶ç«¯ï¼šP2.0
+ * åŠ çƒ­æ§åˆ¶ç«¯ï¼šP2.1
  */
 sbit ColdCtrl = P2 ^ 0;
 sbit HeatCtrl = P2 ^ 1;
@@ -55,7 +55,7 @@ void ctrl_device(uint8_t state)
 }
 
 /*
- * ÑÓÊ±ms
+ * å»¶æ—¶ms
  */
 void delay(int ms)	  
 {
@@ -121,7 +121,7 @@ uint8_t inb()
     return temp;
 }
 /*
- * ÏòÖ¸¶¨¼Ä´æÆ÷Ğ´ÈëÊı¾İ Cmd=0x40+¼Ä´æÆ÷µØÖ·
+ * å‘æŒ‡å®šå¯„å­˜å™¨å†™å…¥æ•°æ® Cmd=0x40+å¯„å­˜å™¨åœ°å€
  */
 static void wRIte_w(uint8_t cmd, uint32_t val)
 {
@@ -134,7 +134,7 @@ static void wRIte_w(uint8_t cmd, uint32_t val)
 }
 
 /* 
- * ¶ÁÈ¡Ö¸¶¨¼Ä´æÆ÷Êı¾İ Cmd=0x00+¼Ä´æÆ÷µØÖ· 
+ * è¯»å–æŒ‡å®šå¯„å­˜å™¨æ•°æ® Cmd=0x00+å¯„å­˜å™¨åœ°å€ 
  */
 uint32_t read_w(uint8_t cmd)
 {
@@ -151,8 +151,8 @@ uint32_t read_w(uint8_t cmd)
 }
 
 /*
- * CS5550³õÊ¼»¯
- * ·ÅÔÚÖ÷º¯ÊıÀï
+ * CS5550åˆå§‹åŒ–
+ * æ”¾åœ¨ä¸»å‡½æ•°é‡Œ
  */
 void CS5550Init()
 {
@@ -175,7 +175,7 @@ void CS5550Init()
 }
 
 /*
- * ½«µÃµ½µÃ¸¡µãĞÍÎÂ¶È³ËÒÔ10ºóÇ¿ÖÆ×ª»»Îª¸¡µãÊıºó·µ»Ø
+ * å°†å¾—åˆ°å¾—æµ®ç‚¹å‹æ¸©åº¦ä¹˜ä»¥10åå¼ºåˆ¶è½¬æ¢ä¸ºæµ®ç‚¹æ•°åè¿”å›
  * return (uint16_t)(tempf + 0.5f) * 10.0f;
  */
 int16_t get_actulval(void)
@@ -186,7 +186,7 @@ int16_t get_actulval(void)
     
     if ((TempP & 0x800000) == 0x800000)
     {
-        /* ²âÁ¿ A/D ×ª»»Æ÷µÚÒ»Í¨µÀ²âÁ¿mvÖµ */
+        /* æµ‹é‡ A/D è½¬æ¢å™¨ç¬¬ä¸€é€šé“æµ‹é‡mvå€¼ */
         Aout_1 = - 1.0 * Aout_1; 
     }
     

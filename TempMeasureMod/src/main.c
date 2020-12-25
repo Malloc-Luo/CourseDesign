@@ -20,10 +20,11 @@
 static volatile uint16_t data systick = 0;
 
 int16_t ModTemperture = 0;
-int16_t SetTemperture = 20;
-int16_t RefTemperture = 20;
+/* 默认为20°C */
+int16_t SetTemperture = 200;
+int16_t RefTemperture = 200;
 uint8_t MasterCmd = ACTUL_VAL;
-uint8_t RecvMasterCmd = SET_VAL;
+uint8_t RecvMasterCmd = 0;
 bit initFlag = 1;
 
 sfr AUXR = 0x8e;
