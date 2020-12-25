@@ -49,10 +49,12 @@ static void parsing_instruction()
     {
         switch (RecvMasterCmd)
         {
-            /* 修改设定值，如果设定值没有主动改变 */
+            /* 修改设定值，如果设定值没有主动改变 
+             * 并且没有发错（本来是想加校验的）
+             */
             case SET_VAL:
             {
-                if (!isSetValChanged)
+                if (!isSetValChanged && temp <= MAX_TEMP && temp >= RefTemperture)
                 {
                     SetTemperture = temp;
                 }

@@ -371,9 +371,9 @@ void key_set()
 
 
     //设定温度超出参考范围时
-    if (SetTemperture > 3000)
+    if (SetTemperture > MAX_TEMP)
     {
-        SetTemperture = 3000;
+        SetTemperture = MAX_TEMP;
         isBelow = 1;
     }
 

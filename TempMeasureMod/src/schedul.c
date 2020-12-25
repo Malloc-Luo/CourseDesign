@@ -67,7 +67,7 @@ void Task_5Hz()
          * 如果是重置参考值或者接到党中央发来的指示：
          * 则把参考值发回党中央，且标志位清零
          */
-        if (isResetRefVal)
+        if (isResetRefVal || (RefTemperture > ModTemperture))
         {
             isResetRefVal = 0;
             RefTemperture = ModTemperture;

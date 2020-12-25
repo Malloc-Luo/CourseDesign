@@ -55,7 +55,10 @@ static void parsing_instruction()
         /* 修改设定值 */
         case SET_VAL:
         {
-            SetTemperture = temp;
+            if (temp <= MAX_TEMP && temp >= RefTemperture)
+            {
+                SetTemperture = temp;
+            }
             break;
         }
         /* 重置温度参考值*/

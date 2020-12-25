@@ -89,9 +89,9 @@ int16_t get_setval(void)
             break;
     }
     
-    if (ST1 > 3000)
+    if (ST1 > MAX_TEMP)
     {
-        SetTemperture = 3000;
+        SetTemperture = MAX_TEMP;
     }
     else if (ST1 < RefTemperture)
     {

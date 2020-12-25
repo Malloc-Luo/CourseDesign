@@ -14,6 +14,9 @@ typedef signed char int8_t;
 typedef signed int  int16_t;
 typedef signed long int32_t;
 
+/* 最高温度设为100°C */
+#define MAX_TEMP 1000
+
 /**
  * 温控模块的温度
  * 将获取到的温度 * 10后转换成16位整形
